@@ -1,0 +1,39 @@
+extends ../base
+
+block scripts
+	script.
+		var chino = "mula";
+
+block content
+	br
+	br
+	
+	div.container
+		
+		h1 Asignar Tarea
+		div
+			b Curso: 
+			select
+				option primero basico b
+				option primero basico c
+				option tercero basico a
+			br
+			br
+		div
+			b Fecha de entrega: 
+			input(type='date')
+			br
+			br
+		div
+			b Descripción:
+			br
+			textarea
+			br
+			br
+		
+		div
+			input(type='submit', value='Adjuntar archivo') 
+			br
+			br
+		div
+			input(type='submit', value='Guardar cambios') 
