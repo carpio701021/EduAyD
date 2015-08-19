@@ -1,0 +1,10 @@
+call eduayd1.ingresarMaestro('Luis Eduardo', 'Peralta Martinez', 'luis.peg7@gmail.com', '1994-08-08', '54607893', 'sosygay');
+
+call eduayd1.ingresarCurso('Matematica primero primaria', 'este curso es para los patojos de primero primaria hahahaha');
+
+call eduayd1.ingresarGrado('Primero primaria', 'Este es el grado de primero primaria');
+
+call eduayd1.ingresarSeccion('A', 'es la seccion a');
+
+call eduayd1.ingresarMaestroXCurso(1, 1);
+
