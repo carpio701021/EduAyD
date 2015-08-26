@@ -2,7 +2,76 @@ extends ../base
 
 block scripts
 	script.
-		var chino = "mula";
+
+		window.addEventListener("load", Ready); 
+		function Ready(){ 
+			if(window.File && window.FileReader){ //These are the relevant HTML5 objects that we are going to use 
+			}else{
+				UploadArea.innerHTML = "Tu navegador no soporta el API, por favor actualiza tu navegador";
+			}
+		}
+
+		var SelectedFile;
+		var archivoSubido;
+		function autoSubirArchivo() {
+			if(btnSubirArchivo.value != ''){
+				adjuntarArchivo.style.display = "none";
+				archivosSubidos.style.display = "block";
+				SelectedFile = btnSubirArchivo.files[0];
+				archivosSubidos.innerHTML = '<b>Subiendo archivo adjunto:</b> ' 
+				+ btnSubirArchivo.files[0].name + " [" + btnSubirArchivo.files[0].size + " bytes]" + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
+				
+				var xhrObj = new XMLHttpRequest();
+				var formData = new FormData();
+				formData.append('archivo_tarea',btnSubirArchivo.files[0],btnSubirArchivo.files[0].name);
+				
+				
+				//xhrObj.upload.addEventListener("progress", progressFunction, false);
+				xhrObj.upload.onprogress = function(e) {
+				    var done = e.position || e.loaded, total = e.totalSize || e.total;
+					archivosSubidos.innerHTML = '<b>Subiendo archivo adjunto:</b> ' 
+						+ btnSubirArchivo.files[0].name + " [" + (Math.floor(btnSubirArchivo.files[0].size / (1024*1024))) + " MB] "  
+						+ (Math.floor(done/total*1000)/10) + '%';
+				
+				};
+
+
+				xhrObj.upload.onload=function(e){
+					if(xhrObj.status==200) {
+						alert("Respuesta: \n" + archivoSubido)
+						archivosSubidos.innerHTML = '<b>Archivo adjunto:</b> ' + btnSubirArchivo.files[0].name + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
+					}
+				};
+
+				xhrObj.onreadystatechange = function(){
+					if(xhrObj.readyState==4)
+						if(xhrObj.status==200) {
+							//acciones cuado se aya cargado la pagina
+
+							archivoSubido = xhrObj.responseText;
+							alert("Respuesta: \n" + archivoSubido)
+							archivosSubidos.innerHTML = '<b>Archivo adjunto:</b> ' + btnSubirArchivo.files[0].name + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
+						}else{
+							alert("Ocurrió un error al subir archivo");
+						}
+					};
+				
+				xhrObj.open("POST", "/maestros/asignar_tarea/subir_archivo/", true);
+				
+				
+				xhrObj.send(formData);
+
+			}
+		}
+
+		function quitarAdjunto(){
+			inpfilesup = document.createElement("INPUT");
+			inpfilesup.type = "file";
+			btnSubirArchivo.files= inpfilesup.files;
+			adjuntarArchivo.style.display = "block";
+			archivosSubidos.style.display = "none";
+		}
+
 
 block content
 	br
@@ -25,15 +94,26 @@ block content
 			br
 			br
 		div
-			b Descripci�n:
+			b Ponderación (sobre el 100 de la unidad):
+			input(type='number',min='0',max='100')
+		div
+			b Descripción:
 			br
 			textarea
 			br
-			br
-		
+			
 		div
-			input(type='submit', value='Adjuntar archivo') 
+			//form(id="uploadForm", enctype="multipart/form-data", action = "/maestros/asignar_tarea/subir_archivo/", method="post")
+			div#adjuntarArchivo
+				b Adjuntar Archivo:
+				div#UploadArea.upload
+					input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
+			div#archivosSubidos
+				
+
+
 			br
 			br
 		div
 			input(type='submit', value='Guardar cambios') 
+

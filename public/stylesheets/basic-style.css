@@ -25,26 +25,38 @@ select {
 	width: 250px;
 }
 
-textarea {
-	background: transparent;
-	border-radius: 7px ;
-	font-size: 14px;
-	height: 50px;
-	padding: 5px;
-	width: 80%;
-}
-
-input[type=date] {
+input[type=date],input[type=number],textarea {
 	background: transparent;
 	border-radius: 7px ;
 	font-size: 14px;
 	height: 30px;
 	padding: 5px;
-	width: 150px;
+	width: 100%;
+	max-width: 150px;
 }
 
+textarea {
+	height: 50px;
+	width: 80%;
+	max-width: 100%;
 
-input[type=submit] {
+}
+
+div.upload {
+    overflow: hidden;
+    background: url(/images/mac-file_icon.png);
+    width: 40px !important;
+    height: 40px !important;
+}
+
+div.upload input[type=file] {
+    display: block !important;
+    width: 50px !important;
+    height: 57px !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+}
+input[type=submit]/*,div.upload */{
 		border: 1px solid rgba(0, 0, 0, 0.3);
 		background: #64c8ef; /* Old browsers */
 		background: -moz-linear-gradient(top,  #64c8ef 0%, #00a2e2 100%); /* FF3.6+ */
@@ -71,7 +83,7 @@ input:hover[type=submit]{
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#019ad2', endColorstr='#33bdef',GradientType=0);
 		background-color:#019ad2;
 }
-input:active[type=submit] {
+input:active[type=submit]{
 		position:relative;
 		top:1px;
 }
