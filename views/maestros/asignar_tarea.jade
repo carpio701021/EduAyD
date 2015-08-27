@@ -78,42 +78,80 @@ block content
 	br
 	
 	div.container
-		
+
 		h1 Asignar Tarea
 		div
 			b Curso: 
 			select
-				option primero basico b
-				option primero basico c
-				option tercero basico a
+				each cur,id in cursos
+					option(value='#{cur.id_curso}') #{cur.nombre_curso}
 			br
 			br
 		div
-			b Fecha de entrega: 
-			input(type='date')
+			b Nombre de actividad: 
+			input(type='text')
 			br
 			br
 		div
-			b Ponderación (sobre el 100 de la unidad):
-			input(type='number',min='0',max='100')
+			b Tipo de actividad: 
+			select(id="tipo_actividad", name="tipo_actividad")
+				each t_a,id in tipos_actividad
+					option(value='#{t_a.id_tipo_actividad}') #{t_a.nombre_tipo_actividad}
+			br
+			br
+			
 		div
 			b Descripción:
 			br
 			textarea
 			br
-			
+			br
 		div
-			//form(id="uploadForm", enctype="multipart/form-data", action = "/maestros/asignar_tarea/subir_archivo/", method="post")
+			b Fecha límite: 
+			select(id="fyh", name="fyh[day]", style="width:75px")
+				- var n = 1
+					option(value="0") día
+				while n <= 12
+					option(value="#{n}") #{n++}
+			font  / 
+			select(id="fyh", name="fyh[month]", style="width:75px")
+				each mes,i in ['mes','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+					option(value='#{i}') #{mes} 
+			font  / 
+			select(id="fyh", name="fyh[year]", style="width:75px")
+				option(value="2015") 2015
+			br
+			br
+		div
+			b Hora límite: 
+			select(id="fyh", name="fyh[hr]", style="width:75px")
+				- var n = 0
+				while n < 24
+					option(value="#{n}") #{n++}
+			font  :  
+			select(id="fyh", name="fyh[min]", style="width:75px")
+				- var n = 0
+				while n < 60
+					option(value="#{n}") #{n++}
+			font  hrs
+			br
+			br
+		div
+			b Ponderación:
+			input(type='number',min='0',max='100', style="width:75px")
+			font  pts
+			br
+			br
+		div
 			div#adjuntarArchivo
 				b Adjuntar Archivo:
 				div#UploadArea.upload
 					input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 			div#archivosSubidos
-				
-
-
 			br
 			br
+
 		div
-			input(type='submit', value='Guardar cambios') 
+			input(type='submit', value='Guardar borrador')
+			input(type='submit', value='Enviar tarea')
 

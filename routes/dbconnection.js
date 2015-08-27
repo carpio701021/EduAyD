@@ -7,7 +7,14 @@ default_dbuser='soft';
 default_dbpassword='1234';
 default_db = 'eduayd1';
 
-function exe_query_specific (host , user , password , database_to_use , myquery , callback_to_query_parameters , callback_to_query , if_error , res){
+var if_error = function(res){
+	res.render('index', 
+		{
+			title: 'Sin conexión a la base de datos, favor intente más tarde. <br />Si el problema persiste contacte a su proveedor de servicio.'	
+	});
+}
+
+function exe_query_specific (host , user , password , database_to_use , myquery  , callback_to_query , res){
 
 	//conexion a la base de datos que utilizaremos
 	var mysql = require('mysql');
@@ -40,8 +47,7 @@ function exe_query_specific (host , user , password , database_to_use , myquery 
 						}else{
 							console.log('Consulta exitosa');
 							//Si todo sale bien ejecutamos el callback_to_query
-							var params = {subparams : callback_to_query_parameters,rrows:rows,rfields:fields};
-							callback_to_query(params);
+							callback_to_query(rows);
 						}
 
 					});
@@ -57,15 +63,13 @@ function exe_query_specific (host , user , password , database_to_use , myquery 
 }
 
 
-exports.exe_query = function(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
+exports.exe_query = function(  myquery , callback_to_query , res){
 	exe_query_specific (default_dbhost , 
 		default_dbuser , 
 		default_dbpassword , 
 		default_db , 
 		myquery , 
-		callback_to_query_parameters , 
 		callback_to_query , 
-		if_error , 
 		res );
 }
 //dbstrname
