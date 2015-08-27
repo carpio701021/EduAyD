@@ -3,11 +3,11 @@ var router = express.Router();
 
 //datos de conexion de la base de datos
 default_dbhost='localhost';
-default_dbuser='sdan_web';
-default_dbpassword='web_pass';
-default_db = 'sdandb';
+default_dbuser='soft';
+default_dbpassword='1234';
+default_db = 'eduayd1';
 
-function sdan_query_specific (host , user , password , database_to_use , myquery , callback_to_query_parameters , callback_to_query , if_error , res){
+function exe_query_specific (host , user , password , database_to_use , myquery , callback_to_query_parameters , callback_to_query , if_error , res){
 
 	//conexion a la base de datos que utilizaremos
 	var mysql = require('mysql');
@@ -42,15 +42,6 @@ function sdan_query_specific (host , user , password , database_to_use , myquery
 							//Si todo sale bien ejecutamos el callback_to_query
 							var params = {subparams : callback_to_query_parameters,rrows:rows,rfields:fields};
 							callback_to_query(params);
-
-							/* Metodos funcionales
-							for (row in rows){}
-								console.log('One row: '+ JSON.stringify(rows[row].Nit) + '\n\n');
-								console.log('One row: '+ JSON.stringify(rows[row].Nit) + '\n\n');
-
-							console.log('Rows: ', rows);
-							console.log('Fields: ', fields);
-							*/
 						}
 
 					});
@@ -66,8 +57,8 @@ function sdan_query_specific (host , user , password , database_to_use , myquery
 }
 
 
-exports.sdandb_query = function(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
-	sdan_query_specific (default_dbhost , 
+exports.exe_query = function(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
+	exe_query_specific (default_dbhost , 
 		default_dbuser , 
 		default_dbpassword , 
 		default_db , 
@@ -80,14 +71,3 @@ exports.sdandb_query = function(  myquery , callback_to_query_parameters , callb
 //dbstrname
 
 
-function sdan_query (host , database_to_use , myquery , callback_to_query_parameters , callback_to_query , if_error , res){
-
-	//definir nombre completo de la base de datos
-	var dbstrname = 'sdan';
-	if(database_to_use <=9) dbstrname +='00'+ database_to_use;
-	else if(database_to_use <=99) dbstrname +='0'+ database_to_use;
-
-	return sdan_query_specific (host , default_dbuser , default_dbpassword , dbstrname , myquery , callback_to_query_parameters , callback_to_query , if_error,res);
-}
-
-exports.sdan_query = sdan_query;

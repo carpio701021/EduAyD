@@ -22,7 +22,32 @@ router.get('/', function(req, res, next) {
 
 /* GET Asignacion de tareas */
 router.get('/asignar_tarea/', function(req, res, next) {
-	res.render('maestros/asignar_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
+	
+
+	var recursos_asigna_tarea = function(dbres){
+		res.send( JSON.stringify(dbres.rrows) );
+		//res.render('maestros/asignar_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
+	}
+
+
+    //llamada al objeto base de datos
+    var dbconnection = require('../../routes/dbconnection.js');
+	//Metodo que realiza la consulta a la base de datos y devuelve:
+    var str_query = 'select 4;';
+    //(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
+    dbconnection.exe_query(
+    	str_query, 
+    	'',
+    	recursos_asigna_tarea,
+    	function(res){
+    		res.render('index', 
+    			{
+    				title: 'Sin conexión a la base de datos, favor intente más tarde. <br />Si el problema persiste contacte a su proveedor de servicio.'	
+    		});
+		}, 
+		res);
+
+
 });
 
 
