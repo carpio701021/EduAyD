@@ -12,4 +12,9 @@ router.get('/asignar_tarea/', function(req, res, next) {
 	res.render('maestros/asignar_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
 });
 
+/* GET ingresar notas */
+router.get('/ingresar_notas/', function(req, res, next) {
+	res.render('maestros/ingresar_notas', { nombre_usuario: 'Aqui el nombre usuario' });	
+});
+
 module.exports = router;
