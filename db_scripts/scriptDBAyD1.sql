@@ -48,7 +48,7 @@ DROP TABLE IF EXISTS `eduayd1`.`CURSO` ;
 
 CREATE TABLE IF NOT EXISTS `eduayd1`.`CURSO` (
   `id_curso` INT NOT NULL AUTO_INCREMENT COMMENT '',
-  `nombre_curso` VARCHAR(30) NOT NULL COMMENT '',
+  `nombre_curso` VARCHAR(50) NOT NULL COMMENT '',
   `descripcion_curso` VARCHAR(70) NULL COMMENT '',
   PRIMARY KEY (`id_curso`)  COMMENT '')
 ENGINE = InnoDB;
