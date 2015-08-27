@@ -64,6 +64,11 @@ router.post('/asignar_tarea/subir_archivo/', upload.single('archivo_tarea') , fu
 
 });
 
+/* GET ingresar notas */
+router.get('/ingresar_notas/', function(req, res, next) {
+	res.render('maestros/ingresar_notas', { nombre_usuario: 'Aqui el nombre usuario' });	
+});
+
 
 
 
