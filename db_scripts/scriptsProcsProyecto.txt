@@ -242,6 +242,117 @@ $$
 
 DELIMITER ;
 
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarEncargado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarEncargado`(in nombre varchar(30), in apellido varchar(50), in direccion varchar(60), in telefono varchar(8), in email varchar(45), IN 	fechaNacimientoEncargado date ,in pass varchar(15) )
+BEGIN
+insert into eduayd1.encargado (nombre_encargadoo, apellido_encargado, direccion_encargado, telefono_encargado, email_encargado,fecha_nacimiento_encargado, password)
+values(nombre, apellido, direccion, telefono, email, fechaNacimientoEncargado, pass);
+select 0;
+END$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `insertarEstudianteXEncargado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `insertarEstudianteXEncargado` (in idEstudiante int, in idEncargado int)
+BEGIN
+insert into eduayd1.estudiante_x_encargado(estudiante_id_estudiante, encargado_id_encargado)
+values (idEstudiante, idEncargado);
+select 0;
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `insertarAulaXEstudiante`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `insertarAulaXEstudiante` (in idAula int, in idEstudiante int)
+BEGIN
+insert into eduayd1.aula_x_estudiante(aula_id_aula, estudiante_id_estudiante) 
+values(idAula, idEstudiante);
+select 0;
+END
+$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarActividadXEstudiante`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarActividadXEstudiante`(in idActividad int, in idEstudiante int, in ponderacion float)
+BEGIN
+insert into eduayd1.estudiante_x_actividad(ponderacion,actividad_id_actividad, estudiante_id_estudiante)
+values(ponderacion, idActividad, idEstudiante);
+select 0;
+END$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarSupervisor`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `ingresarSupervisor` (in nombre_supervisor varchar(45), in apellidos_supervisor varchar(45), in telefono varchar(8), in correo varchar(45), in fechaNacimiento date, in pass varchar(15))
+BEGIN
+insert into eduayd1.supervisor(nombre_supervisor, apellidos_supervisor, telefono_supervisor, correo_supervisor, fecha_nacimiento, password)
+values(nombre_supervisor, apellidos_supervisor, telefono, correo, fechaNacimiento, pass);
+select 0;
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarSupervision`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `ingresarSupervision` (in idMaestroCurso int, in idSupervisor int)
+BEGIN
+insert into eduayd1.supervision(maestro_x_curso_id_maestro_x_curso, supervisor_id_supervisor)
+values(idMaestroCurso, idSupervisor);
+select 0;
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarSupervisionActividad`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `ingresarSupervisionActividad` (in idActividad int, in idSupervision int)
+BEGIN
+insert into eduayd1.supervision_x_actividad(actividad_id_actividad, supervision_id_supervision)
+values (idActividad, idSupervision);
+select 0;
+END
+$$
+
+DELIMITER ;
+
+
+
+
+
+
 
 
 
