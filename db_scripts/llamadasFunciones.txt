@@ -8,3 +8,13 @@ call eduayd1.ingresarSeccion('A', 'es la seccion a');
 
 call eduayd1.ingresarMaestroXCurso(1, 1);
 
+call eduayd1.ingresarGradoXSeccion(1, 1);
+
+call eduayd1.ingresarUnidad('Primera Unidad');
+
+call eduayd1.insertarAula('Primero Primaria', 'A', 'Matematica primero primaria', 'Luis Eduardo', 'Peralta Martinez');
+
+call eduayd1.ingresarActividad('Hoja de trabajo 2', 'van a asdfasdf', 'asdfasdfasdf', '2015-08-08', '2015-09-09', 'Hoja de trabajo');
+
+call eduayd1.ingresarEstudiante('Joe', 'Figueroa Escobar', 'holi yo vivo aqui', '12314568', 'micorreo@correo.com', '2016-01-01', 'holi123');
+

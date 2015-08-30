@@ -71,3 +71,181 @@ $$
 DELIMITER ;
 
 
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarGradoXSeccion`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `ingresarGradoXSeccion` (in idSeccion int , in idGrado int)
+BEGIN
+insert into eduayd1.grado_x_seccion(grado_id_grado, seccion_id_seccion) 
+values (idGrado, idSeccion);
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP function IF EXISTS `obtenerIdGrado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE FUNCTION `obtenerIdGrado` (nombreGrado varchar(30))
+RETURNS INTEGER
+BEGIN
+RETURN (select id_grado from eduayd1.grado gr where gr.nombre_grado = nombreGrado);
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP function IF EXISTS `obtenerIdSeccion`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE FUNCTION `obtenerIdSeccion` (nombreSeccion varchar(30))
+RETURNS INTEGER
+BEGIN
+RETURN (select id_seccion from eduayd1.seccion sec where sec.nombre_seccion = nombreSeccion);
+END
+$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP function IF EXISTS `obtenerIdMaestro`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE FUNCTION `obtenerIdMaestro` (nombreMaestro varchar(30), apellidosMaestro varchar(45))
+RETURNS INTEGER
+BEGIN
+RETURN (select id_maestro from eduayd1.maestro ma where ma.nombre_maestro = nombreMaestro and ma.apellidos_maestro = apellidosMaestro);
+END
+$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP function IF EXISTS `obtenerIdCurso`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE FUNCTION `obtenerIdCurso` (nombreCurso varchar(30))
+RETURNS INTEGER
+BEGIN
+RETURN (select id_curso from eduayd1.curso cu where cu.nombre_curso = nombreCurso );
+END
+$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarUnidad`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarUnidad`(in nombreUnidad varchar(45))
+BEGIN
+insert into eduayd1.unidad(nombre_unidad) values (nombreUnidad);
+
+END$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP function IF EXISTS `obtenerIdUnidad`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE FUNCTION `obtenerIdUnidad` (nombreUnidad varchar(45))
+RETURNS INTEGER
+BEGIN
+RETURN (select id_unidad from eduayd1.unidad u where u.nombre_unidad = nombreUnidad);
+END
+$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `insertarAula`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarAula`(in grado varchar(30), in seccion varchar(30), in nombreCurso varchar(30), in nombreMaestro varchar(30), in apellidosMaestro varchar(45)  )
+BEGIN
+declare idGradoXSeccion int;
+declare idMaestroXCurso int;
+declare idUnidad int;
+select id_grado_x_seccion into idGradoXSeccion from eduayd1.grado_x_seccion gxs where gxs.grado_id_grado = (select eduayd1.obtenerIdGrado(grado)) and  (select eduayd1.obtenerIdSeccion(seccion));
+select id_maestro_x_curso into idMaestroXCurso from eduayd1.maestro_x_curso mxc where mxc.maestro_id_maestro = (select eduayd1.obtenerIdMaestro(nombreMaestro, apellidosMaestro)) and mxc.curso_id_curso = (select eduayd1.obtenerIdCurso(nombreCurso));
+select eduayd1.obtenerIdUnidad('Primera Unidad') into idUnidad;
+insert into eduayd1.aula(GRADO_X_SECCION_id_grado_x_seccion, MAESTRO_X_CURSO_id_maestro_x_curso, unidad_id_unidad) 
+values(idGradoXSeccion, idMaestroXCurso, idUnidad);
+END$$
+
+DELIMITER ;
+
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarTipoActividad`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarTipoActividad`(in nombreTipoActividad varchar(45))
+BEGIN
+insert into eduayd1.tipo_actividad(nombre_tipo_actividad) 
+values (nombreTipoActividad);
+END$$
+
+DELIMITER ;
+
+
+
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarActividad`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ingresarActividad`(in nombre_actividad varchar(45), in descripcion_actividad varchar(100) , in direccion_archivo_actividad varchar(45), in fecha_inicio_actividad date, in fecha_fin_actividad date , in tipoActividad varchar(45))
+BEGIN
+declare idTipoActividad int;
+select id_tipo_actividad into idTipoActividad from eduayd1.tipo_actividad ta where ta.nombre_tipo_actividad = tipoActividad;
+if (idTipoActividad is null) then
+insert into eduayd1.tipo_actividad(nombre_tipo_actividad) values (tipoActividad);
+select id_tipo_actividad into idTipoActividad from eduayd1.tipo_actividad ta where ta.nombre_tipo_actividad = tipoActividad;
+end if;
+insert into eduayd1.actividad(nombre_actividad, descripcion_actividad, direccion_archivo_actividad, fecha_inicio_actividad, fecha_final_actividad, TIPO_ACTIVIDAD_id_tipo_actividad)
+values (nombre_actividad, descripcion_actividad, direccion_archivo_actividad, fecha_inicio_actividad, fecha_fin_actividad, idTipoActividad);
+END$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `ingresarEstudiante`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `ingresarEstudiante` (in nombre varchar(30) ,in apellidos varchar(30), in direccion varchar(60), in telefono varchar(8),in email varchar(45) , in fechaNacimiento date, in pass varchar(15))
+BEGIN
+insert into eduayd1.estudiante(nombre_estudiante, apellidos_estudiante, direccion_estudiante, telefono_estudiante, email_estudiante, fecha_nacimiento, password)
+values(nombre, apellidos, direccion, telefono, email, fechaNacimiento, pass);  
+select 0;
+END
+$$
+
+DELIMITER ;
+
+
+
+
+
+
+
+
