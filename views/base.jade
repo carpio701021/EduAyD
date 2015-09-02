@@ -2,8 +2,9 @@ doctype html
 html
 	head
 		title= title
-		link(rel='stylesheet', href='/stylesheets/basic-style.css')
+		//meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
 		meta(name='viewport', content='width=device-width,', initial-scale='1')
+		link(rel='stylesheet', href='/stylesheets/basic-style.css')
 		block scripts
 	
 	body
@@ -16,17 +17,17 @@ html
 
 					block cursosli
 						li#cursosli
-							a(href='/maestro/cursos')
+							a(href='/maestros/cursos')
 								span Cursos
 							
 					block calendario
 						li#calendario
-							a(href='/transacciones_inventarios')
+							a(href='/maestros/calendario')
 								span Calendario
 							
 					block notificacionesli
 						li#notificacionesli.last
-							a(href='/reportes')
+							a(href='/notificaciones')
 								span Notificaciones
 							
 						
@@ -47,8 +48,8 @@ html
 
 						li#configli.useropt
 							a(href='/configuser')
-								span Configuración
+								span ConfiguraciÃ³n
 
 						li#logoutli.useropt.last
 							a(href='/logout')
-								span Cerrar Sesión
+								span Cerrar SesiÃ³n
