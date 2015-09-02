@@ -2,84 +2,96 @@ extends ../base
 
 block scripts
 	script.
-		var Estudiante = ["Alumno1","Alumno2","Alumno3","Alumno4"];
-		
 		function btn_guardar_cambios(){
 			alert("apachaste guardar cambios"+ i1_3.value);
 		}
-		
-		function seleccion_curso(){
-			var objeto = new XMLHttpRequest();
-			var tabla;
-			objeto.onreadystatechange=function(){			
-				if(objeto.readyState==4){ //ya termino de cargar proceso 
-					if(objeto.status==200){ //se cargo bien similar a 404 error 200 = exito
-						tabla= JSON.parse(objeto.reponseText);
-						tabla_alumnos_asignaturas.innerHTML=tabla;
+		var prueba = function(){
+			alert("hola");
+		}
+		document.onreadystatechange= function(){
+			select_curso.onChange = function(){
+				var objeto = new XMLHttpRequest();
+				var tabla;
+				console.log("metodo seleccion curso");	
+				objeto.onreadystatechange = function(){			
+					if(objeto.readyState==4){ //ya termino de cargar proceso 
+						if(objeto.status==200){ //se cargo bien similar a 404 error 200 = exito
+							alert(objeto.responseText);
+							tabla= JSON.stringify(objeto.responseText);
+							console.log("cosas: " + tabla);	
+							tabla_alumnos_asignaturas.innerHTML=tabla;
+						}else{
+							alert("cagadal");
+						}
 					}
-				}
-			};			
-			objeto.open('POST', '/maestros/ingresar_notas/cargar_tabla',true);
-			objeto.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-			objeto.send();					
+				};			
+				objeto.open('POST', '/maestros/ingresar_notas/cargar_tabla',true);
+				objeto.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+				objeto.send();					
+				console.log("metodo seleccion curso2");	
+			}
+			//=seleccion_curso;	
 		}
 		
 		
 
+
 block content
+	br
 	div.container
+		
+		h1 Ingresar Notas			
+		div
+			input(type="submit",onClick="seleccion_curso();")
+			b Curso: 
+			select (name="select_curso",id="select_curso")
+				option(value='-1', disabled selected) Seleccione un curso
+				each cur,id in cursos
+					option(value='#{cur.id_curso}') #{cur.nombre_curso}								
+			br 
+			br 
+		
 			
-			h1 Ingresar Notas			
-			div
-				b Curso: 
-				select (onStateChange='seleccion_curso();', name='select_curso',id='select_curso')
-					option(value="1") Mate 
-					option(value="2") IPC
-					option(value="3") Ciencias Naturales								
-				br
-				br			
-			
-				
-			//form(action='/maestros/ingresar_notas', method='POST')	
-			div(id='tabla_alumnos_asignaturas')		
-				table
-					tr
-						th(width=300) Estudiante 
-						th Asignatura 1						
-						th Asignatura 2
-						th Asignatura 3
-						th Asignatura 4
-						th Asignatura 5
-						
-					tr
-						td  Alumno 1				
-						td 
-							input(id ='i1_3',name ='i1_3', type='text' )
-						td
-							input(id='juan',type='text' )
-						td 
-							input(type='text' )
-						td
-							input(type='text' )
-						td
-							input(type='text' )
-					tr(class="alt")
-						td Alumno 2						
-						td 
-							input(type='text' )
-						td
-							input(type='text' )
-						td 
-							input(type='text' )
-						td
-							input(type='text' )
-						td
-							input(type='text' )								
-				br
-				br								
-				input(type='submit', value='Guardar cambios')
+		//form(action='/maestros/ingresar_notas', method='POST')	
+		div(id='tabla_alumnos_asignaturas')
+			table
+				tr
+					th(width=300) Estudiante 
+					th Asignatura 1						
+					th Asignatura 2
+					th Asignatura 3
+					th Asignatura 4
+					th Asignatura 5
+					
+				tr
+					td  Alumno 1				
+					td 
+						input(id ='i1_3',name ='i1_3', type='text' )
+					td
+						input(id='juan',type='text' )
+					td 
+						input(type='text' )
+					td
+						input(type='text' )
+					td
+						input(type='text' )
+				tr(class="alt")
+					td Alumno 2						
+					td 
+						input(type='text' )
+					td
+						input(type='text' )
+					td 
+						input(type='text' )
+					td
+						input(type='text' )
+					td
+						input(type='text' ) 				
 			br
-			br
-			form(action='/maestros/popo', method='POST')
-				input(type='text', name='genri')
-				input(type='submit', value='boton genri')
+			br 
+			input(type='submit', value='Guardar cambios')
+		br
+		br
+		form(action='/maestros/popo', method='POST')
+			input(type='text', name='genri')
+			input(type='submit', value='boton genri')
