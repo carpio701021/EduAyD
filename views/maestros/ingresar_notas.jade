@@ -1,37 +1,7 @@
 extends ../base
 
 block scripts
-	script.
-		function btn_guardar_cambios(){
-			alert("apachaste guardar cambios"+ i1_3.value);
-		}
-		var prueba = function(){
-			alert("hola");
-		}
-		document.onreadystatechange= function(){
-			select_curso.onChange = function(){
-				var objeto = new XMLHttpRequest();
-				var tabla;
-				console.log("metodo seleccion curso");	
-				objeto.onreadystatechange = function(){			
-					if(objeto.readyState==4){ //ya termino de cargar proceso 
-						if(objeto.status==200){ //se cargo bien similar a 404 error 200 = exito
-							alert(objeto.responseText);
-							tabla= JSON.stringify(objeto.responseText);
-							console.log("cosas: " + tabla);	
-							tabla_alumnos_asignaturas.innerHTML=tabla;
-						}else{
-							alert("cagadal");
-						}
-					}
-				};			
-				objeto.open('POST', '/maestros/ingresar_notas/cargar_tabla',true);
-				objeto.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-				objeto.send();					
-				console.log("metodo seleccion curso2");	
-			}
-			//=seleccion_curso;	
-		}
+	script(language="javascript",src='/javascript/ingresar_notas.js')
 		
 		
 
@@ -39,12 +9,11 @@ block scripts
 block content
 	br
 	div.container
-		
 		h1 Ingresar Notas			
 		div
-			input(type="submit",onClick="seleccion_curso();")
+			input(type="submit",onClick="seleccionar_curso();")
 			b Curso: 
-			select (name="select_curso",id="select_curso")
+			select (name="select_curso",id="select_curso",onClick="seleccionar_curso();")
 				option(value='-1', disabled selected) Seleccione un curso
 				each cur,id in cursos
 					option(value='#{cur.id_curso}') #{cur.nombre_curso}								
