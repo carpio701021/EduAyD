@@ -13,7 +13,7 @@ block content
 		div
 			input(type="submit",onClick="seleccionar_curso();")
 			b Curso: 
-			select (name="select_curso",id="select_curso",onClick="seleccionar_curso();")
+			select(name="select_curso",id="select_curso",onClick="seleccionar_curso();")
 				option(value='-1', disabled selected) Seleccione un curso
 				each cur,id in cursos
 					option(value='#{cur.id_curso}') #{cur.nombre_curso}								

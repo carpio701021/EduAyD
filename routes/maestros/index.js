@@ -100,4 +100,23 @@ router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
 
 
 
+router.get('/examenes/', function(req, res, next) {
+
+	var recursos_examenes= function(cursos_del_maestro){
+		res.render('maestros/examenes', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_maestro
+		});	
+	}
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'select c.id_curso,c.nombre_curso from Maestro_x_curso,Curso c where MAESTRO_id_maestro = 1 and c.id_curso = CURSO_id_curso;';	
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_examenes,
+			res);
+});
+
+
 module.exports = router;
