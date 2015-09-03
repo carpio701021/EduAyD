@@ -369,6 +369,27 @@ $$
 
 DELIMITER ;
 
+USE `eduayd1`;
+DROP procedure IF EXISTS `estudiantePorCursoAsignado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `estudiantePorCursoAsignado` (in idCurso int)
+BEGIN
+select e.id_estudiante, e.nombre_estudiante, e.apellidos_estudiante from eduayd1.estudiante e,
+(select * from eduayd1.aula_x_estudiante axe,
+(select * from eduayd1.aula a ,
+(select * from eduayd1.maestro_x_curso mxc,
+(select * from eduayd1.curso c where c.id_curso = idCurso) as curso
+where mxc.curso_id_curso = curso.id_curso) as mxc2
+where a.maestro_x_curso_id_maestro_x_curso = mxc2.id_maestro_x_curso) as aula
+where axe.aula_id_aula = aula.id_aula) as axe2
+where e.id_estudiante = axe2.estudiante_id_estudiante;
+END
+$$
+
+DELIMITER ;
+
 
 
 
