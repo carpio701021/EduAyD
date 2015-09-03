@@ -67,6 +67,7 @@ router.post('/asignar_tarea/subir_archivo/', upload.single('archivo_tarea') , fu
 router.get('/ingresar_notas/', function(req, res, next) {
 
 	var recursos_ingresar_notas= function(cursos_del_maestro){
+		console.log("q pedo "+cursos_del_maestro);
 		res.render('maestros/ingresar_notas', { 
 			nombre_usuario: 'Luis Eduardo' ,
 			cursos: cursos_del_maestro

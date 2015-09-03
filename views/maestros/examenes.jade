@@ -79,65 +79,32 @@ block content
 	div.container
 
 		h1 Examenes
-		div
-			b Curso: 
-			select
-				each cur,id in cursos
-					option(value='#{cur.id_curso}') #{cur.nombre_curso}
-			br
-			br
-		div
-			b Descripción:
-			br
-			textarea
-			br
-			br
-		div
-			b Fecha límite: 
-			select(id="fyh", name="fyh[day]", style="width:75px")
-				- var n = 1
-					option(value="0") día
-				while n <= 12
-					option(value="#{n}") #{n++}
-			font  / 
-			select(id="fyh", name="fyh[month]", style="width:75px")
-				each mes,i in ['mes','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
-					option(value='#{i}') #{mes} 
-			font  / 
-			select(id="fyh", name="fyh[year]", style="width:75px")
-				option(value="2015") 2015
-			br
-			br
-		div
-			b Hora límite: 
-			select(id="fyh", name="fyh[hr]", style="width:75px")
-				- var n = 0
-				while n < 24
-					option(value="#{n}") #{n++}
-			font  :  
-			select(id="fyh", name="fyh[min]", style="width:75px")
-				- var n = 0
-				while n < 60
-					option(value="#{n}") #{n++}
-			font  hrs
-			br
-			br
-		div
-			b Ponderación:
-			input(type='number',min='0',max='100', style="width:75px")
-			font  pts
-			br
-			br
-		div
-			div#adjuntarArchivo
-				b Adjuntar Archivo:
-				div#UploadArea.upload
-					input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
-			div#archivosSubidos
-			br
-			br
+		div(Style="display:inline-block;padding:20px;")
+			div
+				b Curso: 
+				select
+					each cur,id in cursos
+						option(value='#{cur.id_curso}') #{cur.nombre_curso}
+				br
+				br
+			
+			div
+				div#adjuntarArchivo
+					b Adjuntar Archivo:
+					div#UploadArea.upload
+						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
+				div#archivosSubidos
+				br
+				br
 
+			div			
+				input(type='submit', value='Enviar a supervisión')		
+		div(Style="display:inline-block;")			
+			select(size="10",style="width:500px")
+				option(value='1') hola1
+				option(value='2') hola2
+				option(value='3') hola3
+				option(value='4') hola4
 		div
-			input(type='submit', value='Guardar borrador')
-			input(type='submit', value='Enviar tarea')
+
 
