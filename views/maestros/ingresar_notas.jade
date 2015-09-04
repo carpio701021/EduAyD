@@ -9,9 +9,9 @@ block scripts
 block content
 	br
 	div.container
-		h1 Ingresar Notas			
-		div			
-			b Curso: 
+		h1 Ingresar Notas
+		div
+			b Curso:
 			select(name="select_curso",id="select_curso",onChange="seleccionar_curso();")
 				option(value='-1', disabled selected) Seleccione un curso
 				each cur in cursos
@@ -57,7 +57,4 @@ block content
 			br 
 			input(type='submit', value='Guardar cambios')
 		br
-		br
-		form(action='/maestros/popo', method='POST')
-			input(type='text', name='genri')
-			input(type='submit', value='boton genri')
+		br		

@@ -6,13 +6,13 @@ function btn_guardar_cambios(){
 		}
 		function seleccionar_curso(){			
 				var objeto = new XMLHttpRequest();
-				var tabla;
+				var tabla="";
 				console.log("metodo seleccion curso");	
 				objeto.onreadystatechange = function(){			
 					if(objeto.readyState==4){ //ya termino de cargar proceso 
 						if(objeto.status==200){ //se cargo bien similar a 404 error 200 = exito
 							alert(objeto.responseText);
-							tabla= JSON.stringify(objeto.responseText);
+							tabla= JSON.stringify(objeto.responseText);							
 							console.log("cosas: " + tabla);	
 							tabla_alumnos_asignaturas.innerHTML=tabla;
 						}else{

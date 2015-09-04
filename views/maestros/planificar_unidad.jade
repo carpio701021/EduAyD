@@ -71,8 +71,8 @@ block scripts
 			archivosSubidos.style.display = "none";
 		}
 
-		function seleccionar_examen(){			
-			lbl_comentario_examen.innerHTML="<p>Examen seleccionado: "+select_examen_subido.value+"<\p>";
+		function seleccionar_planificacion(){			
+			lbl_comentario_examen.innerHTML="<p>Examen seleccionado: "+select_planificacion_subida.value+"<\p>";
 		}
 
 
@@ -82,7 +82,7 @@ block content
 	
 	div.container
 
-		h1 Examenes
+		h1 Planificar Unidad Academica
 		table
 			tr			
 				td
@@ -106,13 +106,13 @@ block content
 						input(type='submit', value='Enviar a supervisión')					
 				td
 					div
-						b Examenes enviados a supervisión
+						b Planificaciones enviadas a supervisión
 					div(Style="display:inline-block;")			
-						select(size="10",style="width:500px",onChange="seleccionar_examen();",id="select_examen_subido")
-							option(value='1') hola1
-							option(value='2') hola2
-							option(value='3') hola3
-							option(value='4') hola4			
+						select(size="10",style="width:500px",onChange="seleccionar_planificacion();",id="select_planificacion_subida")
+							option(value='1') plani1
+							option(value='2') plani2
+							option(value='3') plani3
+							option(value='4') plani4		
 				td(width="30%")					
 					b Comentario de supervisor
 					div(id="lbl_comentario_examen")							

@@ -85,17 +85,29 @@ router.get('/ingresar_notas/', function(req, res, next) {
 
 router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
 	console.log("post cargar tabla");
-	var recursos_ingresar_notas= function(cursos_del_maestro){
-		console.log("Consulta: " + cursos_del_maestro);
-		res.send(cursos_del_maestro);
+	var recursos_cargar_tabla= function(estudiantes_curso_seleccionado){
+		console.log("Consulta: " + estudiantes_curso_seleccionado);
+		var tabla="<table><tr><th width=300> Estudiante</th>";
+		var par=true;
+		for(var e in estudiantes_curso_seleccionado){		
+			if(par){
+				tabla+="<tr><td>"+estudiantes_curso_seleccionado[e].nombre_estudiante + " "+estudiantes_curso_seleccionado[e].apellidos_estudiante+"</td></tr>"
+				par=false;
+			}else{
+				tabla+="<tr class='alt'><td>"+estudiantes_curso_seleccionado[e].nombre_estudiante + " "+estudiantes_curso_seleccionado[e].apellidos_estudiante+"</td></tr>"
+				par=true;
+			}			
+		}
+		tabla+="</table>"
+		res.send(tabla);
 	}
 
 	var dbconnection = require('../../routes/dbconnection.js');
-    var str_query = 'select c.id_curso,c.nombre_curso from Maestro_x_curso,Curso c where MAESTRO_id_maestro = 1 and c.id_curso = CURSO_id_curso;';	
+    var str_query = 'select * from Estudiante;';	
 
 	dbconnection.exe_query(
 			str_query, 
-			recursos_ingresar_notas,
+			recursos_cargar_tabla,
 			res);
 });
 
@@ -118,6 +130,27 @@ router.get('/examenes/', function(req, res, next) {
 			recursos_examenes,
 			res);
 });
+
+
+router.get('/planificar_unidad/', function(req, res, next) {
+
+	var recursos_planificar= function(cursos_del_maestro){
+		res.render('maestros/planificar_unidad', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_maestro
+		});	
+	}
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'select c.id_curso,c.nombre_curso from Maestro_x_curso,Curso c where MAESTRO_id_maestro = 1 and c.id_curso = CURSO_id_curso;';	
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_planificar,
+			res);
+});
+
+
 
 
 module.exports = router;
