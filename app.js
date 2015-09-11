@@ -11,6 +11,7 @@ var test = require('unit.js');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var maestros = require('./routes/maestros/index');
+var estudiantes = require('./routes/estudiantes/index');
 
 var app = express();
 
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/maestros', maestros);
-app.use('/estudiantes', maestros);
+app.use('/estudiantes', estudiantes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

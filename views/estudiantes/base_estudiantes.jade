@@ -1,0 +1,55 @@
+doctype html
+html
+	head
+		title= title
+		//meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+		meta(name='viewport', content='width=device-width,', initial-scale='1')
+		link(rel='stylesheet', href='/stylesheets/basic-style.css')
+		block scripts
+	
+	body
+		#wrapper
+			#cssmenu
+				ul#menulu
+					li#logoli.client
+						#logoa(onClick='window.location = "/"')
+							span EduAyD
+
+					block cursosli
+						li#cursosli
+							a(href='/estudiantes/cursos')
+								span Cursos
+							
+					block calendario
+						li#calendario
+							a(href='/estudiantes/calendario')
+								span Calendario
+							
+					block notificacionesli
+						li#notificacionesli.last
+							a(href='/notificaciones')
+								span Notificaciones
+							
+						
+
+			#content
+				block content
+
+			#footer
+				br
+				br
+				br
+				#cssmenu.footer
+					ul#menufooter.footer
+						
+						li#logout.user
+							#logoa(onClick='window.location = "/"')
+								span #{nombre_usuario}
+
+						li#configli.useropt
+							a(href='/configuser')
+								span Configuración
+
+						li#logoutli.useropt.last
+							a(href='/logout')
+								span Cerrar Sesión
