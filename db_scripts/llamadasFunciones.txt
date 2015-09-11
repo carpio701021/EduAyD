@@ -1,0 +1,33 @@
+call eduayd1.ingresarMaestro('Luis Eduardo', 'Peralta Martinez', 'luis.peg7@gmail.com', '1994-08-08', '54607893', 'sosyungrangay');
+
+call eduayd1.ingresarCurso('Matematica primero primaria', 'este curso es para los patojos de primero primaria hahahaha');
+
+call eduayd1.ingresarGrado('Primero primaria', 'Este es el grado de primero primaria');
+
+call eduayd1.ingresarSeccion('A', 'es la seccion a');
+
+call eduayd1.ingresarMaestroXCurso(1, 1); //ids maestro y curso
+
+call eduayd1.ingresarGradoXSeccion(1, 1); //ids grado y seccion
+
+call eduayd1.ingresarUnidad('Primera Unidad');
+
+call eduayd1.insertarAula('Primero Primaria', 'A', 'Matematica primero primaria', 'Luis Eduardo', 'Peralta Martinez');
+
+call eduayd1.ingresarActividad('Hoja de trabajo 2', 'van a asdfasdf', 'asdfasdfasdf', '2015-08-08', '2015-09-09', 'Hoja de trabajo');
+
+call eduayd1.ingresarEstudiante('Joe', 'Figueroa Escobar', 'holi yo vivo aqui', '12314568', 'micorreo@correo.com', '2016-01-01', 'holi123');
+
+call eduayd1.ingresarEncargado('Jose', 'Lopez Lopez', 'bla bla bla', '12312312', 'correo@correo.com', '1991-02-02', 'huehue');
+
+call eduayd1.insertarEstudianteXEncargado(1, 1); //ids estudiante y encargao
+
+call eduayd1.insertarAulaXEstudiante(1, 1); //ids aula y estudiante
+
+call eduayd1.ingresarActividadXEstudiante(1, 1, 2.5); //idactividad, idEstudiante, ponderacion
+
+call eduayd1.ingresarSupervisor('Juan', 'Perez Perez', '45645678', 'correo@correo.com', '1996-05-05', 'huehue');
+
+call eduayd1.ingresarSupervision(2, 1); //ids maestro_x_curso y supervisor
+
+call eduayd1.ingresarSupervisionActividad(1, 2); //ids actividad y supervision
