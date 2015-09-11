@@ -33,7 +33,7 @@ router.get('/asignar_tarea/', function(req, res, next) {
 
 		//llamada al objeto base de datos
 		var dbconnection = require('../../routes/dbconnection.js');
-		var str_query = 'SELECT * FROM maestro_x_curso,curso WHERE MAESTRO_id_maestro = 1 AND maestro_x_curso.CURSO_id_curso=curso.id_curso;';
+		var str_query = 'CALL seccionCursoGrado('+1+');';
 		//(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
 		dbconnection.exe_query(
 			str_query, 
@@ -53,13 +53,52 @@ router.get('/asignar_tarea/', function(req, res, next) {
 
 });
 
+router.post('/asignar_tarea/guardar_tarea', function(req, res, next) {
+	var nombre_actividad = req.body.nombre_actividad;
+	var descripcion_actividad = req.body.descripcion ;
+	var direccion_archivo_actividad = "" ;
+	var part_direccion_archivo = req.body.archivoAdjuntoT.split('\\');
+	for(part in part_direccion_archivo)
+		direccion_archivo_actividad+=part_direccion_archivo[part] + "/";
+	var fecha_inicio_actividad = req.body.fyh_day + '-' + req.body.fyh_month + '-' + req.body.fyh_year ;
+	var fecha_fin_actividad =fecha_inicio_actividad ;
+	var tipoActividad = req.body.tipo_actividad ;
+
+	//var send = fecha_inicio_actividad;
+	//console.log(send);
+	//res.send(send);
+	//return;
+
+	//falta guardar
+	var curso = req.body.curso;
+	var poneracion = req.body.ponderacion;
+
+	var ingresar_actividad= function(cursos_del_maestro){
+		res.render('maestros/#tarea guardada exitosamente', { 
+			nombre_usuario: 'Luis Eduardo' ,
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'CALL ingresarActividad`('+
+		'\'' + nombre_actividad  + '\'' + ',' + 
+		'\'' + descripcion_actividad  + '\'' + ',' + 
+		'\'' + direccion_archivo_actividad  + '\'' + ',' + 
+		'\'' + fecha_inicio_actividad  + '\'' + ',' + 
+		'\'' + fecha_fin_actividad  + '\'' + ',' + 
+		'\'' + tipoActividad  + '\');' ;
+
+	dbconnection.exe_query(
+			str_query, 
+			ingresar_actividad,
+			res);
+});
+
 
 router.post('/asignar_tarea/subir_archivo/', upload.single('archivo_tarea') , function (req, res, next) {
 	// req.file is the `avatar` file
 	// req.body will hold the text fields, if there were any
 	console.log("Archivo subido: " + req.file.path );
 	res.send(req.file.path);
-
 });
 
 /* GET ingresar notas */
