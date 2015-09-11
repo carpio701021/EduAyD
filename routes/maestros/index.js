@@ -87,7 +87,7 @@ router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
 	console.log("post cargar tabla");
 	var recursos_cargar_tabla= function(estudiantes_curso_seleccionado){
 		console.log("Consulta: " + estudiantes_curso_seleccionado);
-		var tabla="<table><tr><th width=300> Estudiante</th>";
+		var tabla="p"+req.body.curso+"<table><tr><th width=300> Estudiante</th>";
 		var par=true;
 		for(var e in estudiantes_curso_seleccionado){		
 			if(par){
