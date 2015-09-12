@@ -1,76 +1,7 @@
 extends ../base
 
 block scripts
-	script.
-
-		window.addEventListener("load", Ready); 
-		function Ready(){ 
-			if(window.File && window.FileReader){ //These are the relevant HTML5 objects that we are going to use 
-			}else{
-				UploadArea.innerHTML = "Tu navegador no soporta el API, por favor actualiza tu navegador";
-			}
-		}
-
-		var SelectedFile;
-		var archivoSubido;
-		function autoSubirArchivo() {
-			if(btnSubirArchivo.value != ''){
-				adjuntarArchivo.style.display = "none";
-				archivosSubidos.style.display = "block";
-				SelectedFile = btnSubirArchivo.files[0];
-				archivosSubidos.innerHTML = '<b>Subiendo archivo adjunto:</b> ' 
-				+ btnSubirArchivo.files[0].name + " [" + btnSubirArchivo.files[0].size + " bytes]" + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
-				
-				var xhrObj = new XMLHttpRequest();
-				var formData = new FormData();
-				formData.append('archivo_tarea',btnSubirArchivo.files[0],btnSubirArchivo.files[0].name);
-				
-				
-				//xhrObj.upload.addEventListener("progress", progressFunction, false);
-				xhrObj.upload.onprogress = function(e) {
-				    var done = e.position || e.loaded, total = e.totalSize || e.total;
-					archivosSubidos.innerHTML = '<b>Subiendo archivo adjunto:</b> ' 
-						+ btnSubirArchivo.files[0].name + " [" + (Math.floor(btnSubirArchivo.files[0].size / (1024*1024))) + " MB] "  
-						+ (Math.floor(done/total*1000)/10) + '%';
-				
-				};
-				
-				xhrObj.upload.onload=function(e){
-					if(xhrObj.status==200) {
-						alert("Respuesta: \n" + archivoSubido)
-						archivosSubidos.innerHTML = '<b>Archivo adjunto:</b> ' + btnSubirArchivo.files[0].name + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
-					}
-				};
-
-				xhrObj.onreadystatechange = function(){
-					if(xhrObj.readyState==4)
-						if(xhrObj.status==200) {
-							//acciones cuado se aya cargado la pagina
-
-							archivoSubido = xhrObj.responseText;
-							alert("Respuesta: \n" + archivoSubido)
-							archivosSubidos.innerHTML = '<b>Archivo adjunto:</b> ' + btnSubirArchivo.files[0].name + ' <input type="submit" value="Quitar" onClick="quitarAdjunto();"/>';
-						}else{
-							alert("Ocurrió un error al subir archivo");
-						}
-					};
-				
-				xhrObj.open("POST", "/maestros/asignar_tarea/subir_archivo/", true);
-				
-				
-				xhrObj.send(formData);
-
-			}
-		}
-
-		function quitarAdjunto(){
-			inpfilesup = document.createElement("INPUT");
-			inpfilesup.type = "file";
-			btnSubirArchivo.files= inpfilesup.files;
-			adjuntarArchivo.style.display = "block";
-			archivosSubidos.style.display = "none";
-		}
-
+	script(language="javascript",src='/javascript/asignar_tarea.js')
 
 block content
 	br
@@ -79,78 +10,84 @@ block content
 	div.container
 
 		h1 Asignar Tarea
-		div
-			b Curso: 
-			select
-				each cur,id in cursos
-					option(value='#{cur.id_curso}') #{cur.nombre_curso}
-			br
-			br
-		div
-			b Nombre de actividad: 
-			input(type='text')
-			br
-			br
-		div
-			b Tipo de actividad: 
-			select(id="tipo_actividad", name="tipo_actividad")
-				each t_a,id in tipos_actividad
-					option(value='#{t_a.id_tipo_actividad}') #{t_a.nombre_tipo_actividad}
-			br
-			br
-			
-		div
-			b Descripción:
-			br
-			textarea
-			br
-			br
-		div
-			b Fecha límite: 
-			select(id="fyh", name="fyh[day]", style="width:75px")
-				- var n = 1
-					option(value="0") día
-				while n <= 12
-					option(value="#{n}") #{n++}
-			font  / 
-			select(id="fyh", name="fyh[month]", style="width:75px")
-				each mes,i in ['mes','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
-					option(value='#{i}') #{mes} 
-			font  / 
-			select(id="fyh", name="fyh[year]", style="width:75px")
-				option(value="2015") 2015
-			br
-			br
-		div
-			b Hora límite: 
-			select(id="fyh", name="fyh[hr]", style="width:75px")
-				- var n = 0
-				while n < 24
-					option(value="#{n}") #{n++}
-			font  :  
-			select(id="fyh", name="fyh[min]", style="width:75px")
-				- var n = 0
-				while n < 60
-					option(value="#{n}") #{n++}
-			font  hrs
-			br
-			br
-		div
-			b Ponderación:
-			input(type='number',min='0',max='100', style="width:75px")
-			font  pts
-			br
-			br
-		div
-			div#adjuntarArchivo
-				b Adjuntar Archivo:
-				div#UploadArea.upload
-					input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
-			div#archivosSubidos
-			br
-			br
+		form(type='submit', action='/maestros/asignar_tarea/guardar_tarea', method='POST', accept-charset='utf-8')
+			div
+				b Curso: 
+				select(name='curso')
+					each cur,id in cursos
+						option(value='#{cur.id_curso}') #{cur.nombre_curso}
+				br
+				br
+			div
+				b Nombre de actividad: 
+				input(type='text',name='nombre_actividad')
+				br
+				br
+			div
+				b Tipo de actividad: 
+				select(id="tipo_actividad", name="tipo_actividad")
+					each t_a,id in tipos_actividad
+						option(value='#{t_a.id_tipo_actividad}') #{t_a.nombre_tipo_actividad}
+				br
+				br
+				
+			div
+				b Descripción:
+				br
+				textarea(name='descripcion')
+				br
+				br
+			div
+				b Fecha límite: 
+				select(name="fyh_day", style="width:75px",required)
+					- var n = 1
+						option(value="0", disabled selected) día
+					while n <= 12
+						option(value="#{n}") #{n++}
+				font  / 
+				select(name="fyh_month", style="width:75px",required)
+					option(value="0",disabled selected) mes
+					each mes,i in ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+						option(value='#{i+1}') #{mes} 
+				font  / 
+				select(name="fyh_year", style="width:75px")
+					option(value="2015") 2015
+				br
+				br
+			div
+				b Hora límite: 
+				select(id="fyh", name="fyh_hr", style="width:75px")
+					- var n = 0
+					while n < 24
+						option(value="#{n}") #{n++}
+				font  :  
+				select(id="fyh", name="fyh_min", style="width:75px")
+					- var n = 0
+					while n < 60
+						option(value="#{n}") #{n++}
+				font  hrs
+				br
+				br
+			div
+				b Ponderación:
+				input(type='number',min='0',max='100', style="width:75px", name = 'ponderacion')
+				font  pts
+				br
+				br
+			div
+				div#adjuntarArchivo
+					b Adjuntar Archivo:
+					div#UploadArea.upload
+						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
+				div#archivosSubidos
+				input(type='text', id='info',name='info')
+				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT')
+				//,style="display:block;")
+				br
+				br
 
-		div
-			input(type='submit', value='Guardar borrador')
-			input(type='submit', value='Enviar tarea')
+			div 
+				//asignar tarea
+				//input(type='submit', value='Guardar borrador')
+				input(type='submit', value='Publicar tarea')
 

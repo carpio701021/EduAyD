@@ -349,6 +349,47 @@ $$
 DELIMITER ;
 
 
+USE `eduayd1`;
+DROP procedure IF EXISTS `seccionCursoGrado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `seccionCursoGrado` (in idMaestro int)
+BEGIN
+select g.nombre_grado,s.nombre_seccion,gxs2.nombre_curso from eduayd1.grado g, eduayd1.seccion s, 
+(select * from eduayd1.grado_x_seccion gxs,
+(select * from eduayd1.aula a,
+(select * from eduayd1.maestro_x_curso mxc, eduayd1.curso cu 
+where mxc.maestro_id_maestro = idMaestro and mxc.curso_id_curso = cu.id_curso) as cursos
+where a.maestro_x_curso_id_maestro_x_curso = cursos.id_maestro_x_curso) as aula
+where gxs.id_grado_x_seccion = aula.grado_x_seccion_id_grado_x_seccion) as gxs2
+where g.id_grado = gxs2.grado_id_grado and s.id_seccion = gxs2.seccion_id_seccion;
+END
+$$
+
+DELIMITER ;
+
+USE `eduayd1`;
+DROP procedure IF EXISTS `estudiantePorCursoAsignado`;
+
+DELIMITER $$
+USE `eduayd1`$$
+CREATE PROCEDURE `estudiantePorCursoAsignado` (in idCurso int)
+BEGIN
+select e.id_estudiante, e.nombre_estudiante, e.apellidos_estudiante from eduayd1.estudiante e,
+(select * from eduayd1.aula_x_estudiante axe,
+(select * from eduayd1.aula a ,
+(select * from eduayd1.maestro_x_curso mxc,
+(select * from eduayd1.curso c where c.id_curso = idCurso) as curso
+where mxc.curso_id_curso = curso.id_curso) as mxc2
+where a.maestro_x_curso_id_maestro_x_curso = mxc2.id_maestro_x_curso) as aula
+where axe.aula_id_aula = aula.id_aula) as axe2
+where e.id_estudiante = axe2.estudiante_id_estudiante;
+END
+$$
+
+DELIMITER ;
+
 
 
 
