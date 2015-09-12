@@ -33,7 +33,7 @@ router.get('/asignar_tarea/', function(req, res, next) {
 
 		//llamada al objeto base de datos
 		var dbconnection = require('../../routes/dbconnection.js');
-		var str_query = 'CALL seccionCursoGrado('+1+');';
+		var str_query = 'CALL seccionCursoGrado('+2+');';
 		//(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
 		dbconnection.exe_query(
 			str_query, 

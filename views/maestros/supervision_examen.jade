@@ -9,7 +9,7 @@ block content
 	
 	div.container
 
-		h1 Asignar Tarea
+		h1 Subir examen para supervición
 		form(type='submit', action='/maestros/asignar_tarea/guardar_tarea', method='POST', accept-charset='utf-8')
 			div
 				b Curso: 
@@ -69,18 +69,11 @@ block content
 				br
 				br
 			div
-				b Ponderación:
-				input(type='number',min='0',max='100', style="width:75px", name = 'ponderacion')
-				font  pts
-				br
-				br
-			div
 				div#adjuntarArchivo
 					b Adjuntar Archivo:
 					div#UploadArea.upload
 						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 				div#archivosSubidos
-				//input(type='text', id='info',name='info')
 				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:block;")
 				br
 				br
