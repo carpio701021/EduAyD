@@ -19,6 +19,7 @@ function seleccionar_curso(){
 				alert("cagadal");
 			}
 		}
+<<<<<<< HEAD
 		var prueba = function(){
 			alert("hola");
 		}
@@ -46,6 +47,7 @@ function seleccionar_curso(){
 				console.log("metodo seleccion curso2");				
 			//=seleccion_curso;	
 		}
+=======
 	};			
 	objeto.open('POST', '/maestros/ingresar_notas/cargar_tabla',true);
 	objeto.setRequestHeader('Content-type','application/x-www-form-urlencoded');
@@ -53,3 +55,4 @@ function seleccionar_curso(){
 	console.log("metodo seleccion curso2");				
 //=seleccion_curso;	
 }
+>>>>>>> master
