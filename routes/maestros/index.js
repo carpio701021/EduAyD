@@ -121,7 +121,7 @@ router.get('/ingresar_notas/', function(req, res, next) {
 });
 
 router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	console.log("post cargar tabla");
 	var recursos_cargar_tabla= function(estudiantes_curso_seleccionado){
 		console.log("Consulta: " + estudiantes_curso_seleccionado);
@@ -153,32 +153,32 @@ router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
 
 router.get('/examenes/', function(req, res, next) {
 
-	var recursos_examenes= function(cursos_del_maestro){
-		res.render('maestros/examenes', { 
-			nombre_usuario: 'Luis Eduardo' ,
-			cursos: cursos_del_maestro
-		});	
-=======
+//	var recursos_examenes= function(cursos_del_maestro){
+//		res.render('maestros/examenes', { 
+//			nombre_usuario: 'Luis Eduardo' ,
+//			cursos: cursos_del_maestro
+//		});	
+//=======
 	var recursos_ingresar_notas= function(cursos_del_maestro){
 		console.log(cursos_del_maestro);
 		res.send(cursos_del_maestro);
->>>>>>> master
+//>>>>>>> master
 	}
 
 	var dbconnection = require('../../routes/dbconnection.js');
     var str_query = 'select c.id_curso,c.nombre_curso from Maestro_x_curso,Curso c where MAESTRO_id_maestro = 1 and c.id_curso = CURSO_id_curso;';	
 
 	dbconnection.exe_query(
-<<<<<<< HEAD
-			str_query, 
-			recursos_examenes,
-			res);
-=======
+//<<<<<<< HEAD
+	//		str_query, 
+	//		recursos_examenes,
+	//		res);
+//=======
 		str_query, 
 		recursos_ingresar_notas,
 		res
 	);
->>>>>>> master
+//>>>>>>> master
 });
 
 
