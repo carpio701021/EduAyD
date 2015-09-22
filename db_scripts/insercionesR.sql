@@ -7,7 +7,7 @@ DROP COLUMN descripcion;
 
 ALTER TABLE tarea
 ADD descripcion text;
-
+-- holi
 	-- que se genere automaticamente la llave primaria de tarea
 ALTER TABLE tarea
 CHANGE COLUMN tarea tarea INT NOT NULL AUTO_INCREMENT ;
