@@ -8,25 +8,26 @@ block content
 	br
 	
 	div.container
-		h1 Asignar Tarea
+
+		h1 Subir examen para supervición
 		form(type='submit', action='/maestros/asignar_tarea/guardar_tarea', method='POST', accept-charset='utf-8')
 			div
 				b Curso: 
 				select(name='curso')
 					each cur,id in cursos
-						option(value='{curso:#{cur.curso},seccion:#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
+						option(value='#{cur.id_curso}') #{cur.nombre_curso}
 				br
 				br
-			//div
+			div
 				b Nombre de actividad: 
 				input(type='text',name='nombre_actividad')
 				br
 				br
 			div
-				b Tipo de tarea: 
-				select(id="tipo_tarea", name="tipo_tarea")
-					each t_a,id in tipos_tarea
-						option(value='#{t_a.id_tipo_tarea}') #{t_a.nombre_tipo_tarea}
+				b Tipo de actividad: 
+				select(id="tipo_actividad", name="tipo_actividad")
+					each t_a,id in tipos_actividad
+						option(value='#{t_a.id_tipo_actividad}') #{t_a.nombre_tipo_actividad}
 				br
 				br
 				
@@ -68,18 +69,11 @@ block content
 				br
 				br
 			div
-				b Ponderación:
-				input(type='number',min='0',max='100', style="width:75px", name = 'ponderacion')
-				font  pts
-				br
-				br
-			div
 				div#adjuntarArchivo
 					b Adjuntar Archivo:
 					div#UploadArea.upload
 						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 				div#archivosSubidos
-				//input(type='text', id='info',name='info')
 				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:block;")
 				br
 				br
