@@ -5,7 +5,7 @@ var router = express.Router();
 default_dbhost='localhost';
 default_dbuser='soft';
 default_dbpassword='1234';
-default_db = 'eduayd1';
+default_db = 'eduaydre';
 
 var if_error = function(res){
 	res.render('index', 

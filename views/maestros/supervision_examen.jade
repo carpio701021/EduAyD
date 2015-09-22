@@ -1,0 +1,85 @@
+extends ../base
+
+block scripts
+	script(language="javascript",src='/javascript/asignar_tarea.js')
+
+block content
+	br
+	br
+	
+	div.container
+
+		h1 Subir examen para supervición
+		form(type='submit', action='/maestros/asignar_tarea/guardar_tarea', method='POST', accept-charset='utf-8')
+			div
+				b Curso: 
+				select(name='curso')
+					each cur,id in cursos
+						option(value='#{cur.id_curso}') #{cur.nombre_curso}
+				br
+				br
+			div
+				b Nombre de actividad: 
+				input(type='text',name='nombre_actividad')
+				br
+				br
+			div
+				b Tipo de actividad: 
+				select(id="tipo_actividad", name="tipo_actividad")
+					each t_a,id in tipos_actividad
+						option(value='#{t_a.id_tipo_actividad}') #{t_a.nombre_tipo_actividad}
+				br
+				br
+				
+			div
+				b Descripción:
+				br
+				textarea(name='descripcion')
+				br
+				br
+			div
+				b Fecha límite: 
+				select(name="fyh_day", style="width:75px",required)
+					- var n = 1
+						option(value="0", disabled selected) día
+					while n <= 12
+						option(value="#{n}") #{n++}
+				font  / 
+				select(name="fyh_month", style="width:75px",required)
+					option(value="0",disabled selected) mes
+					each mes,i in ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+						option(value='#{i+1}') #{mes} 
+				font  / 
+				select(name="fyh_year", style="width:75px")
+					option(value="2015") 2015
+				br
+				br
+			div
+				b Hora límite: 
+				select(id="fyh", name="fyh_hr", style="width:75px")
+					- var n = 0
+					while n < 24
+						option(value="#{n}") #{n++}
+				font  :  
+				select(id="fyh", name="fyh_min", style="width:75px")
+					- var n = 0
+					while n < 60
+						option(value="#{n}") #{n++}
+				font  hrs
+				br
+				br
+			div
+				div#adjuntarArchivo
+					b Adjuntar Archivo:
+					div#UploadArea.upload
+						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
+				div#archivosSubidos
+				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:block;")
+				br
+				br
+
+			div 
+				//asignar tarea
+				//input(type='submit', value='Guardar borrador')
+				input(type='submit', value='Publicar tarea')
+

@@ -17,7 +17,8 @@ describe(
 					function() {
 						var notas_asignaturas = [ 5, 5, 10, 20, 10 ];
 						var porcentaje_a_calcular = 1;
-						var per = calculator.Calc.percent(porcentaje_a_calcular, notas_asignaturas);
+						var per = calculator.Calc.percent(
+								porcentaje_a_calcular, notas_asignaturas);
 						test.number(per).is(10);
 					});
 		});
