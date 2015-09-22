@@ -21,19 +21,21 @@ router.get('/', function(req, res, next) {
 /* GET Asignacion de tareas */
 router.get('/asignar_tarea/', function(req, res, next) {
 	
-	var recursos_asigna_tarea = function(tipo_actividad){
+	var recursos_asigna_tarea = function(tipo_tarea){
 
 		var recursos_asigna_tarea1 = function(cursos_del_maestro){
 			res.render('maestros/asignar_tarea', { 
 				nombre_usuario: 'Luis Eduardo' , 
-				cursos: cursos_del_maestro,
-				tipos_actividad: tipo_actividad
+				cursos: cursos_del_maestro[0],
+				tipos_tarea: tipo_tarea
 			} );
+			console.log("cursos: "+ JSON.stringify(cursos_del_maestro));
+			console.log("tipos_tarea: "+ JSON.stringify(tipo_tarea));
 		}
 
 		//llamada al objeto base de datos
 		var dbconnection = require('../../routes/dbconnection.js');
-		var str_query = 'CALL seccionCursoGrado('+1+');';
+		var str_query = 'CALL sp_get_cursos_ciclos_from_maestro(1,1);'; //maestro,ciclo
 		//(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
 		dbconnection.exe_query(
 			str_query, 
@@ -43,7 +45,7 @@ router.get('/asignar_tarea/', function(req, res, next) {
 
     //llamada al objeto base de datos
     var dbconnection = require('../../routes/dbconnection.js');
-    var str_query = 'SELECT * FROM eduayd1.tipo_actividad;';
+    var str_query = 'select * from tarea_tipo;';
     //(  myquery , callback_to_query_parameters , callback_to_query , if_error , res){
     dbconnection.exe_query(
     	str_query, 
@@ -54,38 +56,59 @@ router.get('/asignar_tarea/', function(req, res, next) {
 });
 
 router.post('/asignar_tarea/guardar_tarea', function(req, res, next) {
-	var nombre_actividad = req.body.nombre_actividad;
-	var descripcion_actividad = req.body.descripcion ;
+	
+	var p_unidad = 1 ;
+	var p_tipo_tarea = req.body.tipo_tarea  ;
+	var p_ciclo =  1;
+	var p_maestro =  1;
+	//console.log( JSON.parse(req.body.curso).curso ) ;
+	var p_curso = JSON.parse( req.body.curso ).curso;
+	var p_seccion = JSON.parse( req.body.curso ).seccion;
+	var p_es_examen = '0' ;
+	var p_descripcion = req.body.descripcion ;
+
 	var direccion_archivo_actividad = "" ;
 	var part_direccion_archivo = req.body.archivoAdjuntoT.split('\\');
 	for(part in part_direccion_archivo)
 		direccion_archivo_actividad+=part_direccion_archivo[part] + "/";
-	var fecha_inicio_actividad = req.body.fyh_day + '-' + req.body.fyh_month + '-' + req.body.fyh_year ;
-	var fecha_fin_actividad =fecha_inicio_actividad ;
-	var tipoActividad = req.body.tipo_actividad ;
+
+	var p_ruta_archivo = direccion_archivo_actividad ;
+	var p_ponderacion = req.body.ponderacion ;
+	var p_fecha_limite = req.body.fyh_year + '-' + req.body.fyh_month + '-' + req.body.fyh_day + ' ' + req.body.fyh_hr + ':' + req.body.fyh_min ;
+	var p_toleraciona = 1 ;
+	var p_tiempo_tolerancia = p_fecha_limite ;
+	var p_porcentaje_tolerancia = 0 ;
+	var p_aprobada = 0 ;
+
 
 	//var send = fecha_inicio_actividad;
 	//console.log(send);
 	//res.send(send);
 	//return;
 
-	//falta guardar
-	var curso = req.body.curso;
-	var poneracion = req.body.ponderacion;
-
-	var ingresar_actividad= function(cursos_del_maestro){
-		res.render('maestros/#tarea guardada exitosamente', { 
-			nombre_usuario: 'Luis Eduardo' ,
+	ingresar_actividad= function(cursos_del_maestro){
+		res.render('maestros/', { 
+			nombre_usuario: 'Luis Eduardo #exito' ,
 		});	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-    var str_query = 'CALL ingresarActividad`('+
-		'\'' + nombre_actividad  + '\'' + ',' + 
-		'\'' + descripcion_actividad  + '\'' + ',' + 
-		'\'' + direccion_archivo_actividad  + '\'' + ',' + 
-		'\'' + fecha_inicio_actividad  + '\'' + ',' + 
-		'\'' + fecha_fin_actividad  + '\'' + ',' + 
-		'\'' + tipoActividad  + '\');' ;
+	var str_query = 'CALL sp_insert_tarea_from_maestro('
+		+ p_unidad  + ','
+		+ p_tipo_tarea + ','
+		+ p_ciclo + ','
+		+ p_maestro + ','
+		+ p_curso + ','
+		+ p_seccion + ','
+		+ p_es_examen + ','
+		+ "'" + p_descripcion + "'"  + ','
+		+ "'" + p_ruta_archivo + "'"  + ','
+		+ p_ponderacion + ','
+		+ "'" + p_fecha_limite + "'"  + ','
+		+ p_toleraciona + ','
+		+ "'" + p_tiempo_tolerancia + "'"  + ','
+		+ p_porcentaje_tolerancia + ','
+		+ p_aprobada  + ');'
+		;
 
 	dbconnection.exe_query(
 			str_query, 
@@ -101,7 +124,7 @@ router.post('/asignar_tarea/subir_archivo/', upload.single('archivo_tarea') , fu
 	res.send(req.file.path);
 });
 
-/* GET ingresar notas */
+/* GETgresar notas */
 router.get('/ingresar_notas/', function(req, res, next) {
 
 	var recursos_ingresar_notas= function(cursos_del_maestro){
