@@ -98,11 +98,8 @@ block scripts
 			xmlhttp.send();
 			}
 
-		function btn_enviar_unidad(unidad){
-			var ob = JSON.parse(unidad)
-			select_unidades_enviadas.innerHTML+="<option value="+select_unidades_enviadas.length+">Unidad: "+ob.unidad
-			+", "+select_curso.value
-			 +"<\p>";
+		function btn_enviar_unidad(unidad){			
+			select_unidades_enviadas.innerHTML+="<option value='1' >Unidad 1 </option>";
 		}
 
 block content
