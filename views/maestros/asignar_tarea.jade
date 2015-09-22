@@ -14,22 +14,16 @@ block content
 				b Curso: 
 				select(name='curso')
 					each cur,id in cursos
-						option(value='{curso:#{cur.curso},seccion:#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
-				br
-				br
-			//div
-				b Nombre de actividad: 
-				input(type='text',name='nombre_actividad')
+						option(value='{"curso":#{cur.curso},"seccion":#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
 				br
 				br
 			div
 				b Tipo de tarea: 
 				select(id="tipo_tarea", name="tipo_tarea")
 					each t_a,id in tipos_tarea
-						option(value='#{t_a.id_tipo_tarea}') #{t_a.nombre_tipo_tarea}
+						option(value='#{t_a.tarea_tipo}') #{t_a.nombre}
 				br
 				br
-				
 			div
 				b Descripción:
 				br
@@ -79,8 +73,8 @@ block content
 					div#UploadArea.upload
 						input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 				div#archivosSubidos
-				//input(type='text', id='info',name='info')
-				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:block;")
+				input(type='text', id='info',name='info',style="display:none;")
+				input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:none;")
 				br
 				br
 
