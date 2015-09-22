@@ -74,49 +74,26 @@ block scripts
 		function seleccionar_examen(){			
 			lbl_comentario_examen.innerHTML="<p>Examen seleccionado: "+select_examen_subido.value+"<\p>";
 		}
-		
-		function prueba(valor){
-			alert(valor);
-		}
-		function ajax_desplegar_examenes(curso, maestro, ciclo)
-			{
-			var xmlhttp;			
-			if (window.XMLHttpRequest)
-			  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			  xmlhttp=new XMLHttpRequest();
-			  }
-			else
-			  {// code for IE6, IE5
-			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			  }
-			xmlhttp.onreadystatechange=function()
-			  {
-			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			    {			    
-			    document.getElementById("select_examen_subido").innerHTML=xmlhttp.responseText;
-			    }
-			  }
-			xmlhttp.open("GET","/maestros/examenes/cargar_examenes?curso="+curso+"&maestro="+maestro+"&ciclo="+ciclo,true);
-			xmlhttp.send();
-			}
+
 
 block content
 	br
 	br
+	
 	div.container
 
-		h1 Examenes
+		h1 PLANIFICAR UNIDAD
 		table
-			tr
+			tr			
 				td
 					div(Style="display:inline-block;padding:0px;")
 						div
 							b Curso: 
-							select(id="combo_cursos",onChange="ajax_desplegar_examenes(this.value,1,1);")
+							select
 								each cur,id in cursos
-									option(value='#{cur.curso}') #{cur.nombre_curso}
+									option(value='#{cur.id_curso}') #{cur.nombre_curso}
 							br
-							br
+							br								
 					div
 						div#adjuntarArchivo
 							b Adjuntar Archivo:
@@ -124,20 +101,19 @@ block content
 								input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 						div#archivosSubidos
 						br
-						br
-					div
-						input(type='submit', value='Enviar a supervisión')
+						br				
+					div			
+						input(type='submit', value='Enviar a supervisión')					
 				td
 					div
 						b Examenes enviados a supervisión
-					div(Style="display:inline-block;")
-						select(size="10",style="width:500px;height:100px",onChange="seleccionar_examen();",id="select_examen_subido")
+					div(Style="display:inline-block;")			
+						select(size="10",style="width:500px",onChange="seleccionar_examen();",id="select_examen_subido")
 							option(value='1') hola1
 							option(value='2') hola2
 							option(value='3') hola3
 							option(value='4') hola4			
-				td(width="30%")
+				td(width="30%")					
 					b Comentario de supervisor
-					div(id="lbl_comentario_examen")
+					div(id="lbl_comentario_examen")							
 						
-			
