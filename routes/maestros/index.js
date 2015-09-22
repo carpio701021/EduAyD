@@ -168,6 +168,66 @@ router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
 	);
 });
 
+router.get('/planificar_unidad/', function(req, res, next) {
+
+	var recursos_planificar= function(cursos_del_maestro){
+		res.render('maestros/planificar_unidad', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_maestro[0]
+		});	
+	}
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'CALL sp_get_cursos_ciclos_from_maestro(1,1);'; //maestro,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_planificar,
+			res);
+});
+
+router.get('/examenes/', function(req, res, next) {
+
+	var recursos_examenes= function(cursos_del_maestro){
+		res.render('maestros/supervision_examen', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_maestro[0]
+		});	
+	}
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'CALL sp_get_cursos_ciclos_from_maestro(1,1);'; //maestro,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_examenes,
+			res);
+	});
+
+
+router.get('/examenes/cargar_examenes', function(req, res, next) {
+
+	var recursos_examenes= function(examenes){		
+		var opciones="";
+		for(var e in examenes[0]){		
+			opciones+="<option value="+examenes[0][e].tarea +">"+examenes[0][e].descripcion+"</option>";
+		}		
+
+		res.send(opciones);
+	}
+
+	var ciclo=req.query['ciclo'] +"";
+	var cur= req.query['curso']+"";
+	var maestro= req.query['maestro']+"";	
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = "CALL eduaydre.get_examenes_maestro_curso("+ciclo+","+cur+","+maestro+");"; //maestro,ciclo
+	
+	dbconnection.exe_query(
+			str_query, 
+			recursos_examenes,
+			res);
+	});
 
 
 module.exports = router;
