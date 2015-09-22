@@ -9,8 +9,8 @@ ALTER TABLE tarea
 ADD descripcion text;
 -- holi
 	-- que se genere automaticamente la llave primaria de tarea
-ALTER TABLE tarea
-CHANGE COLUMN tarea tarea INT NOT NULL AUTO_INCREMENT ;
+-- ALTER TABLE tarea
+-- CHANGE COLUMN tarea tarea INT NOT NULL AUTO_INCREMENT ;
 
 	-- El tipo de dato de fecha_limite en la tabla tarea_seccion_ciclo_curso_maestro debe ser datetime
 ALTER TABLE tarea_seccion_ciclo_curso_maestro
@@ -76,6 +76,17 @@ VALUES (p_ciclo, p_curso, nueva_llave_tarea, p_ponderacion, p_fecha_limite, p_to
 END$$
 DELIMITER ;
 
+-- Obtiene los examenes respecto al maestro y el curso
+
+DROP PROCEDURE IF EXISTS get_examenes_maestro_curso;
+delimiter $$
+create procedure get_examenes_maestro_curso(in cicloP int, in cursoP int, in maestroP int)
+begin
+select t.* 
+from tarea_ciclo_curso_maestro tccm
+inner join tarea t on tccm.tarea = t.tarea
+where tccm.ciclo = cicloP and tccm.curso = cursoP and  tccm.maestro = maestroP and t.esExamen = 1 ;
+end$$
 
 
 
