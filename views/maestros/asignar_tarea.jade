@@ -8,17 +8,16 @@ block content
 	br
 	
 	div.container
-
 		h1 Asignar Tarea
 		form(type='submit', action='/maestros/asignar_tarea/guardar_tarea', method='POST', accept-charset='utf-8')
 			div
 				b Curso: 
 				select(name='curso')
 					each cur,id in cursos
-						option(value='#{cur.id_curso}') #{cur.nombre_curso}
+						option(value='{curso:#{cur.curso},seccion:#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
 				br
 				br
-			div
+			//div
 				b Nombre de actividad: 
 				input(type='text',name='nombre_actividad')
 				br
