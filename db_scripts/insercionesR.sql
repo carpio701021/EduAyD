@@ -88,6 +88,36 @@ inner join tarea t on tccm.tarea = t.tarea
 where tccm.ciclo = cicloP and tccm.curso = cursoP and  tccm.maestro = maestroP and t.esExamen = 1 ;
 end$$
 
+-- SP que devuelve las tareas asignadas a determinada seccion en determinado ciclo y en determinada unidad 
+DROP PROCEDURE IF EXISTS sp_get_tareas_curso_seccion_ciclo_unidad;
+delimiter $$
+create procedure sp_get_tareas_curso_seccion_ciclo_unidad(in p_ciclo int, in p_curso int,in p_seccion int,in p_unidad int)
+begin
+
+select  tsccm.ciclo, tsccm.curso,tsccm.tarea,tsccm.ponderacion,tsccm.tolerancia,tsccm.tiempo_tolerancia,tsccm.porcentaje_tolerancia,
+tsccm.aprobada, tsccm.fecha_limite, t.unidad,t.tipo_tarea,t.esExamen, t.descripcion
+from tarea_seccion_ciclo_curso_maestro tsccm, tarea t
+where tsccm.ciclo=p_ciclo and tsccm.curso=p_curso and tsccm.seccion=p_seccion
+and tsccm.tarea=t.tarea and t.unidad=p_unidad;
+
+end$$
+CALL `eduaydre`.`sp_get_tareas_curso_seccion_ciclo_unidad`(1,1,1,1);
+
+-- SP que devuelve los estudiantes que llevan un curso en determinada seccion y determinado ciclo
+DROP PROCEDURE IF EXISTS sp_get_estudiantes_curso_seccion_ciclo;
+delimiter $$
+create procedure sp_get_estudiantes_curso_seccion_ciclo(in p_ciclo int, in p_curso int,in p_seccion int)
+begin
+
+select esc.carnet, e.nombre,e.apellido  
+from estudiante_seccion_ciclo esc, estudiante_ciclo_curso ecc, estudiante e
+where esc.carnet=ecc.carnet and esc.ciclo=ecc.ciclo and esc.carnet=e.carnet
+and esc.ciclo=p_ciclo and ecc.curso=p_curso and esc.seccion=p_seccion
+order by e.apellido; 
+
+end$$
+
+CALL `eduaydre`.`sp_get_estudiantes_curso_seccion_ciclo`(1,1,1);------ fin stored procedures
 
 
 
@@ -149,3 +179,20 @@ INSERT INTO `eduaydre`.`tarea_ciclo_curso_maestro` (`tarea`, `ciclo`, `maestro`,
 INSERT INTO `eduaydre`.`tarea_seccion_ciclo_curso_maestro` (`ciclo`, `curso`, `tarea`, `ponderacion`, `fecha_limite`, `tolerancia`, `tiempo_tolerancia`, `porcentaje_tolerancia`, `aprobada`, `seccion`) VALUES ('1', '1', '1', '30', '1-2-1 5:30:00', '0', '1-2-1 5:30:00', '0', '1', '1');
 
 
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '1', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '2', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '3', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '1', '2');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '2', '2');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '3', '2');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '1', '3');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '2', '3');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '3', '3');
+
+
+INSERT INTO `eduaydre`.`seccion_ciclo` (`seccion`, `ciclo`) VALUES ('1', '1');
+
+
+INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('1', '1', '1');
+INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('2', '1', '1');
+INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('3', '1', '1');

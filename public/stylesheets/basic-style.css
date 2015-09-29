@@ -31,7 +31,6 @@ input[type=text] {
 	width: 50px;
 }
 
-
 html {
 	background-color: #D3DCE7;
 	font-size: 12pt;
@@ -122,6 +121,14 @@ input,button:active[type=submit]{
 		top:1px;
 }
 
+
+input[type=number].inptxttbl{
+	border:none;
+	width: 100%;
+	padding: 0px;
+	text-align:right;
+	max-width: 100%;
+}
 
 #wrapper {
 	/*border: 5px solid blue;*/

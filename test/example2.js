@@ -3,7 +3,7 @@ var test = require('unit.js');
 describe('Learning by the example', function(){
   it('example variable', function(){
     // just for example of tested value
-    var example = 'carpio world';
+    var example = 'hello world';
     test
       .string(example)
         .startsWith('hello')
