@@ -20,6 +20,15 @@ ALTER TABLE tarea_seccion_ciclo_curso_maestro
 ADD fecha_limite datetime;
 
 
+-- Agregar columna de fecha de calificación y cambiar los tipos de date a datetime en las fechas
+
+ALTER TABLE `eduaydre`.`nota` 
+ADD COLUMN `fecha_calificacion` DATETIME NOT NULL COMMENT '' AFTER `ruta_archivo`;
+ALTER TABLE `eduaydre`.`nota` 
+CHANGE COLUMN `fecha_de_envio` `fecha_de_envio` DATETIME NOT NULL COMMENT '' ,
+
+
+
 -- Un SP al que le mande el id del maestro y me devuelva las secciones que este imparte, de que curso son y el grado
 
 
@@ -117,7 +126,43 @@ order by e.apellido;
 
 end$$
 
-CALL `eduaydre`.`sp_get_estudiantes_curso_seccion_ciclo`(1,1,1);------ fin stored procedures
+CALL `eduaydre`.`sp_get_estudiantes_curso_seccion_ciclo`(1,1,1);
+
+
+-- Procedimiento que guarda una nota (calificación de alguna tarea o la tarea que el estudiante envía como tal)
+DROP PROCEDURE IF EXISTS sp_guardar_nota_from_maestro;
+delimiter $$
+create procedure sp_guardar_nota_from_maestro(in p_carnet int, in p_nota_obtenida int,
+in p_ciclo int,in p_curso int,in p_tarea int,in p_seccion int)
+begin
+
+INSERT INTO `eduaydre`.`nota`
+(`carnet`,
+`nota_obtenida`,
+`fecha_de_envio`,
+`ciclo`,
+`curso`,
+`tarea`,
+`seccion`,
+`fecha_calificacion`)
+VALUES
+(p_carnet,
+p_nota_obtenida,
+NOW(),
+p_ciclo,
+p_curso,
+p_tarea,
+p_seccion,
+NOW())
+ON DUPLICATE KEY UPDATE    
+nota_obtenida=VALUES(nota_obtenida), 
+fecha_calificacion=VALUES(fecha_calificacion);
+
+end$$
+
+
+
+------ fin stored procedures
 
 
 

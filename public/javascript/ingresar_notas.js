@@ -1,9 +1,11 @@
 var estudiantes;
 var tareas;
+var var_curso;
 
 
 function seleccionar_curso(){			
 	var xmlobj = new XMLHttpRequest();
+	var_curso = JSON.parse(curso.value);
 	var data_to_send = '';
 	data_to_send += 'curso=' + JSON.parse(curso.value).curso + '&';
 	data_to_send += 'seccion=' + JSON.parse(curso.value).seccion + '&';
@@ -64,7 +66,8 @@ function generarTabla(estudiantes,tareas){
 	tabla += '</table>';
 	tabla += '<textarea id="estudiantes_tareas" name="estudiantes_tareas" style="display:none;" > '
 		+ '{"estudiantes":' + JSON.stringify(estudiantes) + ',' 
-		+ '"tareas":' + JSON.stringify(tareas) + '}'
+		+ '"tareas":' + JSON.stringify(tareas) + ',' 
+		+ '"curso":'+JSON.stringify(var_curso)+'}'
 		+'</textarea>';
 	//alert(tabla);
 	return tabla;
