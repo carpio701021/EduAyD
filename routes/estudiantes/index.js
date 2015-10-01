@@ -34,6 +34,30 @@ router.get('/subir_tarea', function(req, res, next) {
 	
 });
 
+router.get('/subir_tarea/cargar_tareas', function(req, res, next) {
+	var recursos_actividades= function(actividades){		
+		var opciones="";
+		for(var e in actividades[0]){		
+			opciones+="<option value="+actividades[0][e].tarea +">"+actividades[0][e].descripcion+"</option>";
+		}		
+
+		res.send(opciones);
+	}
+	
+	var p_curso = req.query['curso']+"";
+	var p_seccion = req.query['seccion']+"";	
+	var p_ciclo = req.query['ciclo']+"";	
+	var p_unidad = req.query['unidad']+"";	
+
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'CALL sp_get_tareas_curso_seccion_ciclo_unidad('+p_ciclo+','+p_curso+','+p_seccion+','+p_unidad+');';	
+	
+	dbconnection.exe_query(
+			str_query, 
+			recursos_actividades,
+			res);
+	
+});
 
 
 

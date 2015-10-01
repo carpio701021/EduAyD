@@ -1,8 +1,52 @@
 extends base_estudiantes
 
 block scripts
-	//script(language="javascript",src='/javascript/asignar_tarea.js')
+	script.
+		function seleccionar_curso(curso,ciclo,unidad){
+			var xmlhttp;			
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			    {			    
+			    document.getElementById("select_tareas").innerHTML=xmlhttp.responseText;
+			    }
+			  }
+			var c= JSON.parse(curso);
+			xmlhttp.open("GET","/estudiantes/subir_tarea/cargar_tareas?curso="+c.curso+"&seccion="+c.seccion+"&ciclo="+ciclo+"&unidad="+unidad,true);
+			xmlhttp.send();
+		}
 
 block content
 	br
 	br
+	div.container
+		h1 Tareas
+		div
+			p
+				b Ciclo: 
+			select(id='ciclo',name='ciclo')
+				option(value='1') Ciclo 2015
+			p
+				b Unidad: 
+			select(id='unidad',name='unidad')
+				option(value='1') 1ra Unidad
+			p
+				b Curso: 
+			select(onChange='seleccionar_curso(this.value,ciclo.value,unidad.value)')
+				option(value='{"curso":c1,"seccion":s1}') curso
+				option(value='{"curso":c2,"seccion":s2}') curso
+		br
+		br
+		b Actividades del curso
+		br
+		br
+		div(Style="display:inline-block;")			
+			select(size="10",style="width:500px;height:200px",id="select_tareas")		
