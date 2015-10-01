@@ -161,6 +161,38 @@ fecha_calificacion=VALUES(fecha_calificacion);
 end$$
 
 
+-- SP que obtiene los cursos que un estudiante cursa en un ciclo determinado
+DROP PROCEDURE IF EXISTS sp_get_cursos_ciclos_from_estudiante;
+DELIMITER $$
+CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_cursos_ciclos_from_estudiante`(in p_carnet int,in p_ciclo int)
+BEGIN
+
+select ecc.ciclo,c.curso,c.nombre
+from estudiante_ciclo_curso ecc, curso c
+where ecc.carnet=p_carnet and ecc.ciclo=p_ciclo and ecc.curso=c.curso
+;
+
+END$$
+DELIMITER ;
+
+-- SP que obtiene los resultados de las tareas
+DROP PROCEDURE IF EXISTS sp_get_notas_from_estudiante_curso_ciclo;
+DELIMITER $$
+CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_notas_from_estudiante_curso_ciclo`(
+in p_carnet int,in p_curso int,in p_ciclo int,in p_unidad int)
+BEGIN
+
+select n.nota_obtenida,n.fecha_de_envio,t.descripcion,n.tarea,n.fecha_calificacion,tt.nombre
+-- select *
+from nota n, tarea t, tarea_tipo tt
+where n.carnet = p_carnet and n.ciclo=p_ciclo and 
+n.curso=p_curso and n.tarea=t.tarea and t.unidad=p_unidad and t.tipo_tarea=tt.tarea_tipo
+;
+
+END$$
+DELIMITER ;
+
+
 
 ------ fin stored procedures
 

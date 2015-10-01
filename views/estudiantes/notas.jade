@@ -1,36 +1,26 @@
 extends base_estudiantes
 
 block scripts
-	//script(language="javascript",src='/javascript/asignar_tarea.js')
+	script(language="javascript",src='/javascript/estudiantes/notas.js')
 
 block content
 	br
 	br
 	div.container
-		h1 Notas
-		span Curso: 
-		select
-			option curso
-		br
-		br
-		table
-			tr 
-				td No.
-				td Asignatura
-				td Nota sobre 100
-				td Nota sobre (Ponderación)
-			tr 
-				td 1
-				td Nombre asignatura 
-				td 50
-				td 5
-			tr 
-				td 2
-				td Nombre asignatura 
-				td 90
-				td 14
-			tr 
-				td 3
-				td Nombre asignatura 
-				td 55
-				td 17
+		h1 Mis Notas
+		div(id="select_curso")
+			p
+				b Unidad
+			select(id='unidad',name='unidad')
+				option(value='1') 1ra Unidad
+
+			p
+				b Curso: 
+			select(id='curso',name='curso',onchange="seleccionar_curso();")
+				option(value='-1', disabled selected) Seleccione un curso
+				each cur,id in cursos
+					option(value='{"curso":#{cur.curso},"ciclo":#{cur.ciclo}}') #{cur.nombre}
+			br
+			br
+
+		div(id="div_show_notas")

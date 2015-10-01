@@ -9,9 +9,41 @@ router.get('/', function(req, res, next) {
 
 /* GET notas page. */
 router.get('/notas', function(req, res, next) {
-	res.render('estudiantes/notas', { nombre_usuario: 'Aqui el nombre usuario' });
-	
+
+	var recursos_notas = function(cursos_del_estudiante){
+		res.render('estudiantes/notas', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_estudiante[0]
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_notas,
+			res);
 });
+
+/* GET notas page. */
+router.post('/notas/cargar_tabla_notas', function(req, res, next) {
+
+	var recursos_notas = function(cursos_del_estudiante){
+		res.render('estudiantes/notas', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_estudiante[0]
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_notas,
+			res);
+});
+
+
 
 
 /* POST sumar notas page. */
