@@ -62,17 +62,31 @@ function sumar_notas(list_notas){
 
 /* GET subir_tarea page. */
 router.get('/subir_tarea', function(req, res, next) {
-	res.render('estudiantes/subir_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
+	var recursos_notas = function(cursos_del_estudiante){
+		res.render('estudiantes/subir_tarea', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos: cursos_del_estudiante[0]
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			recursos_notas,
+			res);
 	
 });
 
 router.get('/subir_tarea/cargar_tareas', function(req, res, next) {
 	var recursos_actividades= function(actividades){		
+		console.log("pito");
 		var opciones="";
 		for(var e in actividades[0]){		
 			opciones+="<option value="+actividades[0][e].tarea +">"+actividades[0][e].descripcion+"</option>";
 		}		
-
+		console.log("opciones");
+		console.log(opciones);
 		res.send(opciones);
 	}
 	
@@ -83,7 +97,7 @@ router.get('/subir_tarea/cargar_tareas', function(req, res, next) {
 
 	var dbconnection = require('../../routes/dbconnection.js');
     var str_query = 'CALL sp_get_tareas_curso_seccion_ciclo_unidad('+p_ciclo+','+p_curso+','+p_seccion+','+p_unidad+');';	
-	
+	console.log("pito");
 	dbconnection.exe_query(
 			str_query, 
 			recursos_actividades,
