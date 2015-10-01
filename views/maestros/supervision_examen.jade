@@ -96,9 +96,35 @@ block scripts
 			    document.getElementById("select_examen_subido").innerHTML=xmlhttp.responseText;
 			    }
 			  }
-			xmlhttp.open("GET","/maestros/examenes/cargar_examenes?curso="+curso+"&maestro="+maestro+"&ciclo="+ciclo,true);
+			var c= JSON.parse(curso);
+			xmlhttp.open("GET","/maestros/examenes/cargar_examenes?curso="+c.curso+"&maestro="+maestro+"&ciclo="+ciclo,true);
 			xmlhttp.send();
 			}
+		function btn_enviar_examen(curso, maestro, ciclo){
+			var xmlhttp;			
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			    {			    
+				    if(xmlhttp.responseText=='true'){
+				    	alert("Subido con exito");
+				    }else{
+				    	alert("Error al subir");
+				    }
+			    }
+			  }
+			var c=JSON.parse(curso);
+			xmlhttp.open("GET","/maestros/examenes/enviar?curso="+c.curso+"&mseccion="+c.seccion+"&maestro="+maestro+"&ciclo="+ciclo,true);
+			xmlhttp.send();
+		}
 
 block content
 	br
@@ -111,31 +137,78 @@ block content
 				td
 					div(Style="display:inline-block;padding:0px;")
 						div
-							b Curso: 
-							select(id="combo_cursos",onChange="ajax_desplegar_examenes(this.value,1,1);")
-								each cur,id in cursos
-									option(value='#{cur.curso}') #{cur.nombre_curso}
-							br
-							br
-					div
-						div#adjuntarArchivo
-							b Adjuntar Archivo:
-							div#UploadArea.upload
-								input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
-						div#archivosSubidos
-						br
-						br
-					div
-						input(type='submit', value='Enviar a supervisión')
+							form(type='submit', action='/maestros/examenes/enviar', method='POST', accept-charset='utf-8')
+								div
+									b Curso: 
+									select(name='curso' onChange='ajax_desplegar_examenes(this.value, 1, 1)')
+										option(value='-1', disabled selected) Seleccione un curso
+										each cur,id in cursos
+											option(value='{"curso":#{cur.curso},"seccion":#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
+									br
+									br								
+								div
+									b Descripción:
+									br
+									textarea(name='descripcion')
+									br
+									br
+								div
+									b Fecha límite: 
+									select(name="fyh_day", style="width:75px",required)
+										- var n = 1
+											option(value="0", disabled selected) día
+										while n <= 12
+											option(value="#{n}") #{n++}
+									font  / 
+									select(name="fyh_month", style="width:75px",required)
+										option(value="0",disabled selected) mes
+										each mes,i in ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+											option(value='#{i+1}') #{mes} 
+									font  / 
+									select(name="fyh_year", style="width:75px")
+										option(value="2015") 2015
+									br
+									br
+								div
+									b Hora límite: 
+									select(id="fyh", name="fyh_hr", style="width:75px")
+										- var n = 0
+										while n < 24
+											option(value="#{n}") #{n++}
+									font  :  
+									select(id="fyh", name="fyh_min", style="width:75px")
+										- var n = 0
+										while n < 60
+											option(value="#{n}") #{n++}
+									font  hrs
+									br
+									br
+								div
+									b Ponderación:
+									input(type='number',min='0',max='100', style="width:75px", name = 'ponderacion')
+									font  pts
+									br
+									br
+								div
+									div#adjuntarArchivo
+										b Adjuntar Archivo:
+										div#UploadArea.upload
+											input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
+									div#archivosSubidos
+									input(type='text', id='info',name='info',style="display:none;")
+									input(type='text', id='archivoAdjuntoT',name='archivoAdjuntoT',style="display:none;")
+									br
+									br
+
+								div 
+									//asignar tarea
+									//input(type='submit', value='Guardar borrador')
+									input(type='submit', value='Enviar a supervision')					
 				td
 					div
 						b Examenes enviados a supervisión
 					div(Style="display:inline-block;")
-						select(size="10",style="width:500px;height:100px",onChange="seleccionar_examen();",id="select_examen_subido")
-							option(value='1') hola1
-							option(value='2') hola2
-							option(value='3') hola3
-							option(value='4') hola4			
+						select(size="10",style="width:500px;height:200px",onChange="seleccionar_examen();",id="select_examen_subido")
 				td(width="30%")
 					b Comentario de supervisor
 					div(id="lbl_comentario_examen")

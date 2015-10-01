@@ -75,6 +75,32 @@ block scripts
 			lbl_comentario_examen.innerHTML="<p>Examen seleccionado: "+select_examen_subido.value+"<\p>";
 		}
 
+		function ajax_desplegar_unidades(curso, maestro, ciclo)
+			{
+			var xmlhttp;			
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			    {			    
+			    document.getElementById("select_examen_subido").innerHTML=xmlhttp.responseText;
+			    }
+			  }
+			var c= JSON.parse(curso);
+			xmlhttp.open("GET","/maestros/planificar_unidad/cargar_unidades?curso="+c.curso+"&maestro="+maestro+"&ciclo="+ciclo,true);
+			xmlhttp.send();
+			}
+
+		function btn_enviar_unidad(unidad){			
+			select_unidades_enviadas.innerHTML+="<option value='1' >Unidad 1 </option>";
+		}
 
 block content
 	br
@@ -82,18 +108,27 @@ block content
 	
 	div.container
 
-		h1 PLANIFICAR UNIDAD
+		h1 Planificar Unidad
 		table
-			tr			
+			tr
 				td
 					div(Style="display:inline-block;padding:0px;")
 						div
 							b Curso: 
-							select
-								each cur,id in cursos
-									option(value='#{cur.id_curso}') #{cur.nombre_curso}
-							br
-							br								
+									select(name='curso',id="select_curso")
+										option(value='-1', disabled selected) Seleccione un curso
+										each cur,id in cursos
+											option(value='{"curso":#{cur.curso},"seccion":#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
+									br
+									br
+						div
+							b Unidad: 
+									select(name='unidad',id="select_unidad")
+										option(value='-1', disabled selected) Seleccione un curso
+										each u,id in unidades
+											option(value='{"unidad":#{u.unidad},"fecha_ini":#{u.fecha_inicial},"fecha_fin":#{u.fecha_final}}') unidad #{u.unidad}
+									br
+									br																
 					div
 						div#adjuntarArchivo
 							b Adjuntar Archivo:
@@ -101,19 +136,15 @@ block content
 								input(type='file', value='a',id="btnSubirArchivo", onChange="autoSubirArchivo()") 
 						div#archivosSubidos
 						br
-						br				
+						br
 					div			
-						input(type='submit', value='Enviar a supervisión')					
+						input(type='button', value='Enviar a supervisión' onClick="btn_enviar_unidad(select_unidad.value);")					
 				td
 					div
-						b Examenes enviados a supervisión
+						b Unidades enviadas a supervisión
 					div(Style="display:inline-block;")			
-						select(size="10",style="width:500px",onChange="seleccionar_examen();",id="select_examen_subido")
-							option(value='1') hola1
-							option(value='2') hola2
-							option(value='3') hola3
-							option(value='4') hola4			
-				td(width="30%")					
+						select(size="10",style="width:500px;height:200px",onChange="seleccionar_examen();",id="select_unidades_enviadas")								
+				td(width="20%")					
 					b Comentario de supervisor
 					div(id="lbl_comentario_examen")							
 						
