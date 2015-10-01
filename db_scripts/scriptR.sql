@@ -361,33 +361,6 @@ CREATE TABLE IF NOT EXISTS `eduaydre`.`SECCION_CICLO_CURSO_MAESTRO` (
 ENGINE = InnoDB;
 
 
--- ----------------------------------------------
--- mi tabla
--- 
-
-DROP TABLE IF EXISTS `eduaydre`.`UNIDAD_SECCION_CICLO_CURSO_MAESTRO` ;
-
-CREATE TABLE IF NOT EXISTS `eduaydre`.`UNIDAD_SECCION_CICLO_CURSO_MAESTRO` (
-  `seccion` INT NOT NULL,
-  `ciclo` INT NOT NULL,
-  `id_maestro` INT NOT NULL,
-  `curso` INT NOT NULL,
-  `unidad` INT NOT NULL,
-  PRIMARY KEY (`unidad`, `seccion`, `ciclo`, `id_maestro`, `curso`),
-  INDEX `fk_SECCION_CICLO_CURSO_MAESTRO_CICLO_CURSO_MAESTRO1_idx` (`ciclo` ASC, `id_maestro` ASC, `curso` ASC),
-  CONSTRAINT `fk_table1_SECCION1`
-    FOREIGN KEY (`seccion`)
-    REFERENCES `eduaydre`.`SECCION` (`seccion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_SECCION_CICLO_CURSO_MAESTRO_CICLO_CURSO_MAESTRO1`
-    FOREIGN KEY (`ciclo` , `id_maestro` , `curso`)
-    REFERENCES `eduaydre`.`CICLO_CURSO_MAESTRO` (`ciclo` , `id_maestro` , `curso`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `eduaydre`.`TAREA_SECCION_CICLO_CURSO_MAESTRO`
 -- -----------------------------------------------------

@@ -25,7 +25,7 @@ ADD fecha_limite datetime;
 ALTER TABLE `eduaydre`.`nota` 
 ADD COLUMN `fecha_calificacion` DATETIME NOT NULL COMMENT '' AFTER `ruta_archivo`;
 ALTER TABLE `eduaydre`.`nota` 
-CHANGE COLUMN `fecha_de_envio` `fecha_de_envio` DATETIME NOT NULL COMMENT '' ,
+CHANGE COLUMN `fecha_de_envio` `fecha_de_envio` DATETIME NOT NULL COMMENT '' ;
 
 
 
@@ -194,7 +194,7 @@ DELIMITER ;
 
 
 
------- fin stored procedures
+-- ---- fin stored procedures
 
 
 
