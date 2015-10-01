@@ -7,183 +7,28 @@ block content
 	br
 	div.container
 		h1 Ingresar Notas			
-		div
-			b Curso: 
-				select(name='curso')
-					each cur,id in cursos
-						option(value='{"curso":#{cur.curso},"seccion":#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
-				br
-				br
-		
+		div(id="select_cursos")
+			p
+				b Ciclo
+			select(id='ciclo',name='ciclo')
+				option(value='1') Ciclo 2015
+			p
+				b Unidad
+			select(id='unidad',name='unidad')
+				option(value='1') 1ra Unidad
+
+			p
+				b Curso: 
+			select(id='curso',name='curso',onchange="seleccionar_curso();")
+				option(value='-1', disabled selected) Seleccione un curso
+				each cur,id in cursos
+					option(value='{"curso":#{cur.curso},"seccion":#{cur.seccion}}') #{cur.nombre_curso}, sección #{cur.nombre_seccion}, #{cur.descripcion_grado}
+			br
+			br
+
 			
-		form(action='/maestros/ingresar_notas/#ingresadas', method='POST')
-			div(id='tabla_alumnos_asignaturas')
-				table
-					tr
-						th(width=300) Estudiante 
-						th Tarea 1						
-						th Tarea 2
-						th Tarea 3
-						th Tarea 4
-						th Tarea 5
-						th Tarea 6
-						th Tarea 7
-						th Tarea 8
-						th Tarea 9
-						th Tarea 10
-						
-					tr
-						td  Alumno 1				
-						td 
-							input(id ='i1_3',name ='i1_3', type='number' )
-						td
-							input(id='juan',type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 2						
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 3					
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 4
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 5
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 6
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					tr(class="alt")
-						td Alumno 7
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td 
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-						td
-							input(type='number' )
-					
+		
+		div(id='tbl_ingresar_notas', style='display:none')
+			form(action='/maestros/ingresar_notas/guardar_notas', method='POST')
+				div(id='tabla_alumnos_asignaturas')
+				input(type='submit',value='Guardar notas')

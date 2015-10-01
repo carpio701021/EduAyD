@@ -135,6 +135,7 @@ router.get('/ingresar_notas/', function(req, res, next) {
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
 
+
 	var str_query = 'CALL sp_get_cursos_ciclos_from_maestro(1,1);'; //maestro,ciclo
 	dbconnection.exe_query(
 			str_query, 
@@ -142,20 +143,89 @@ router.get('/ingresar_notas/', function(req, res, next) {
 			res);
 });
 
+
+
+
 router.post('/ingresar_notas/cargar_tabla/', function(req, res, next) {
-	var recursos_ingresar_notas= function(cursos_del_maestro){
-		console.log(cursos_del_maestro);
-		res.send(cursos_del_maestro);
-	}
+
+	var p_curso = req.body.curso;
+	var p_seccion = req.body.seccion;
+	var p_ciclo = req.body.ciclo;
+	var p_unidad = req.body.unidad;
+
+	//console.log("curso: " + p_curso + ", seccion: " + p_seccion)
+
+	var get_estudiantes= function(estudiantes){
+		var get_tareas= function(tareas){
+			res.json({
+				estudiantes:estudiantes[0],
+				tareas:tareas[0]
+			});			
+		};
+
+		var dbconnection = require('../../routes/dbconnection.js');
+	    var str_query = 'CALL sp_get_tareas_curso_seccion_ciclo_unidad('+p_ciclo+','+p_curso+','+p_seccion+','+p_unidad+');';	
+
+		dbconnection.exe_query(
+			str_query, 
+			get_tareas,
+			res
+		);
+
+	};
 
 	var dbconnection = require('../../routes/dbconnection.js');
-    var str_query = 'select c.id_curso,c.nombre_curso from Maestro_x_curso,Curso c where MAESTRO_id_maestro = 1 and c.id_curso = CURSO_id_curso;';	
+    var str_query = 'CALL sp_get_estudiantes_curso_seccion_ciclo('+p_ciclo+','+p_curso+','+p_seccion+');';	
 
 	dbconnection.exe_query(
 		str_query, 
-		recursos_ingresar_notas,
+		get_estudiantes,
 		res
 	);
+});
+
+
+router.post('/ingresar_notas/guardar_notas/', function(req, res, next) {
+
+	console.log(req.body);
+	var estudiantes = JSON.parse(req.body.estudiantes_tareas).estudiantes;
+	var tareas = JSON.parse(req.body.estudiantes_tareas).tareas;
+	var seccion = JSON.parse(req.body.estudiantes_tareas).curso.seccion;
+
+	console.log('Lo que busco: ' + req.body['nota_0_1']);
+
+
+	//var str_query = 'Select 5;';
+	
+	for(es in estudiantes){
+		for(ta in tareas){
+
+			var str_query = 'CALL sp_guardar_nota_from_maestro('
+				+ estudiantes[es].carnet + ',' //<{in p_carnet int}>, 
+				+ req.body['nota_' + es + '_' + ta ] + ',' //<{in p_nota_obtenida int}>, 
+				+ tareas[ta].ciclo + ',' //<{in p_ciclo int}>, 
+				+ tareas[ta].curso + ',' //<{in p_curso int}>, 
+				+ tareas[ta].tarea + ',' //<{in p_tarea int}>, 
+				+ seccion //<{in p_seccion int}>				
+				+ ');'+'\n'; 
+
+			var insertar_nota= function(resultado){
+				console.log("resultado "+es+"_"+ta+": " + resultado);
+			}
+
+			var dbconnection = require('../../routes/dbconnection.js');
+
+			dbconnection.exe_query(
+					str_query, 
+					insertar_nota,
+					res);
+
+		}
+	}
+	
+
+	res.redirect('/maestros/ingresar_notas#notas guardadas exitosamente');
+
 });
 
 router.get('/planificar_unidad/', function(req, res, next) {
