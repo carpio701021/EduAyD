@@ -1,5 +1,4 @@
-var asignaturas;
-var notas;
+var datos;
 var var_curso;
 
 
@@ -20,9 +19,7 @@ function seleccionar_curso(){
 				div_show_notas.style.display = "block";
 				//tabla = JSON.stringify(xmlobj.responseText);
 				datos = JSON.parse(xmlobj.responseText);
-				asignaturas = datos.asignaturas;
-				notas = datos.notas;
-				tabla_alumnos_asignaturas.innerHTML=generarTabla(asignaturas,notas);
+				div_show_notas.innerHTML=generarTabla(datos);
 			}else{
 				alert("Imposible cargar datos del curso seleccionado");
 			}
@@ -35,48 +32,36 @@ function seleccionar_curso(){
 
 
 
-function generarTabla(asignaturas,notas){
-	var nnotas = notas.length;
+function generarTabla(datos){
 	var tabla='<table class="tablanotas" size="1">';
 	tabla += '<tr>';
-	tabla += '<td><b>Clave</b></td>';
-	tabla += '<td><b>Apellidos, Nombres</b></td>';
-	for (var i=0;i<nnotas;i++){
-		tabla += '<td><b>'+notas[i].descripcion + '<br />' 
-			+ notas[i].ponderacion + '/100 pts' +'</b></td>';
-	}
-	tabla += '<td><b>Total<br />100 pts</b></td>';
+	tabla += '<td><b>Tarea</b></td>';
+	tabla += '<td><b>Nota</b></td>';
+	tabla += '<td><b>Fecha de envío</b></td>';
+	tabla += '<td><b>Fecha de calificación</b></td>';
+	tabla += '<td><b>Tipo de tarea</b></td>';
 	tabla += '</tr>';
-	for(var es=0 ; es<asignaturas.length ; es++){
-		tabla += '<tr>';
-			tabla += '<td>' + (es + 1) +'</td>';
-			tabla += '<td>' + asignaturas[es].apellido + ', ' + asignaturas[es].nombre + '</td>';
-		for(var ii=0;ii<nnotas;ii++){
-			tabla += '<td>'
-				+'<input id="nota_'+es+'_'+ ii +'" name="nota_'+es+'_'+ ii +'" onChange="cambio_de_nota('+es+','+ii+');" '
-					+'type="number" max="'+notas[ii].ponderacion+'" min="0" value="0" class="inptxttbl" required />'
-				+'</td>';
-		}
-		tabla += '<td><div id="p_'+es+'" >0</div></td>';
-		tabla += '</tr>'
+
+	var nota_total = 0;
+	for(d in datos){
+		tabla += '<tr>' ;
+		tabla += '<td>' + datos[d].descripcion + '</br>' + datos[d].ponderacion + '/100' + '</td>';
+		tabla += '<td>' + datos[d].nota_obtenida + '</td>';
+		tabla += '<td>' + (new Date(datos[d].fecha_de_envio)).toLocaleDateString() 
+			+ ' ' + (new Date(datos[d].fecha_de_envio)).toLocaleTimeString() + '</td>';
+		tabla += '<td>' + (new Date(datos[d].fecha_calificacion)).toLocaleDateString()  
+			+ ' ' + (new Date(datos[d].fecha_calificacion)).toLocaleTimeString() + '</td>';
+		tabla += '<td>' + datos[d].tipo_tarea + '</td>';
+		tabla += '</tr>' ;
+		nota_total += datos[d].nota_obtenida;
 	}
+		tabla += '<tr>';
+		tabla += '<td><b>Total</b></td>';
+		tabla += '<td>' + nota_total + '</td>';
+		tabla += '</tr>';
+
+
 	tabla += '</table>';
-	tabla += '<textarea id="asignaturas_notas" name="asignaturas_notas" style="display:none;" > '
-		+ '{"asignaturas":' + JSON.stringify(asignaturas) + ',' 
-		+ '"notas":' + JSON.stringify(notas) + ',' 
-		+ '"curso":'+JSON.stringify(var_curso)+'}'
-		+'</textarea>';
-	//alert(tabla);
 	return tabla;
 }
 
-
-
-function cambio_de_nota(nestudiante,ntarea){
-	var suma = 0;
-	for(ta in notas){
-		suma += parseInt(document.getElementById('nota_'+nestudiante+'_'+ta).value);
-	}
-	document.getElementById('p_'+nestudiante).innerHTML = suma;
-	//console.log('Estudiante: '+nestudiante + ' Tarea: '+ntarea);
-}

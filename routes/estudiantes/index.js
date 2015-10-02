@@ -25,17 +25,21 @@ router.get('/notas', function(req, res, next) {
 			res);
 });
 
-/* GET notas page. */
+/* POST tabla de notas page. */
 router.post('/notas/cargar_tabla_notas', function(req, res, next) {
 
 	var recursos_notas = function(cursos_del_estudiante){
-		res.render('estudiantes/notas', { 
-			nombre_usuario: 'Luis Eduardo' ,
-			cursos: cursos_del_estudiante[0]
-		});	
+		console.log(cursos_del_estudiante[0]);
+		res.json(
+			cursos_del_estudiante[0]
+		);	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+	var str_query = 'CALL sp_get_notas_from_estudiante_curso_ciclo(1,'+
+	req.body.curso + ',' +
+	req.body.ciclo + ',' +
+	req.body.unidad +
+	');'; //carnet,curso,ciclo,unidad
 
 	dbconnection.exe_query(
 			str_query, 

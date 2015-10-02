@@ -163,17 +163,23 @@ end$$
 
 -- SP que obtiene los cursos que un estudiante cursa en un ciclo determinado
 DROP PROCEDURE IF EXISTS sp_get_cursos_ciclos_from_estudiante;
+
 DELIMITER $$
 CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_cursos_ciclos_from_estudiante`(in p_carnet int,in p_ciclo int)
 BEGIN
 
-select ecc.ciclo,c.curso,c.nombre
-from estudiante_ciclo_curso ecc, curso c
+select ecc.ciclo,c.curso,c.nombre,esc.seccion
+from estudiante_ciclo_curso ecc, curso c, estudiante_seccion_ciclo esc
 where ecc.carnet=p_carnet and ecc.ciclo=p_ciclo and ecc.curso=c.curso
+and esc.carnet=ecc.carnet and esc.ciclo=p_ciclo
 ;
 
 END$$
 DELIMITER ;
+
+call eduaydre.sp_get_cursos_ciclos_from_estudiante(1, 1);
+
+
 
 -- SP que obtiene los resultados de las tareas
 DROP PROCEDURE IF EXISTS sp_get_notas_from_estudiante_curso_ciclo;
