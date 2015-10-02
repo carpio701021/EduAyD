@@ -188,15 +188,17 @@ CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_notas_from_estudiante_curso_
 in p_carnet int,in p_curso int,in p_ciclo int,in p_unidad int)
 BEGIN
 
-select n.nota_obtenida,n.fecha_de_envio,t.descripcion,n.tarea,n.fecha_calificacion,tt.nombre
+select n.nota_obtenida,n.fecha_de_envio,t.descripcion,n.tarea,n.fecha_calificacion,tt.nombre as 'tipo_tarea',tsccm.ponderacion
 -- select *
-from nota n, tarea t, tarea_tipo tt
-where n.carnet = p_carnet and n.ciclo=p_ciclo and 
-n.curso=p_curso and n.tarea=t.tarea and t.unidad=p_unidad and t.tipo_tarea=tt.tarea_tipo
+from nota n, tarea t, tarea_tipo tt,tarea_seccion_ciclo_curso_maestro tsccm
+where n.carnet = p_carnet and n.ciclo=p_ciclo 
+and n.curso=p_curso and n.tarea=t.tarea and t.unidad=p_unidad and t.tipo_tarea=tt.tarea_tipo
+and t.tarea=tsccm.tarea and tsccm.ciclo=n.ciclo and tsccm.curso=n.curso
 ;
 
 END$$
 DELIMITER ;
+
 
 
 
