@@ -3,16 +3,24 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.render('estudiantes/index', { nombre_usuario: 'Aqui el nombre usuario' });
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
+	res.render('estudiantes/index', { nombre_usuario: req.user_session.usuario });
 	
 });
 
 /* GET notas page. */
 router.get('/notas', function(req, res, next) {
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 
 	var recursos_notas = function(cursos_del_estudiante){
 		res.render('estudiantes/notas', { 
-			nombre_usuario: 'Luis Eduardo' ,
+			nombre_usuario: req.user_session.usuario ,
 			cursos: cursos_del_estudiante[0]
 		});	
 	}
@@ -27,7 +35,10 @@ router.get('/notas', function(req, res, next) {
 
 /* POST tabla de notas page. */
 router.post('/notas/cargar_tabla_notas', function(req, res, next) {
-
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 	var recursos_notas = function(cursos_del_estudiante){
 		console.log(cursos_del_estudiante[0]);
 		res.json(
@@ -52,6 +63,10 @@ router.post('/notas/cargar_tabla_notas', function(req, res, next) {
 
 /* POST sumar notas page. */
 router.get('/notas/sumar_notas', function(req, res, next) {
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 	res.send(sumar_notas(req.body.list_notas));
 });
 
@@ -66,7 +81,11 @@ function sumar_notas(list_notas){
 
 /* GET subir_tarea page. */
 router.get('/subir_tarea', function(req, res, next) {
-	res.render('estudiantes/subir_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
+	res.render('estudiantes/subir_tarea', { nombre_usuario: req.user_session.usuario });
 	
 });
 
