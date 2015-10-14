@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
 	
 });
 
+router.get('/calendario', function(req, res, next) {
+	res.render('estudiantes/calendario', { nombre_usuario: 'Aqui el nombre usuario' });
+	
+});
 /* GET notas page. */
 router.get('/notas', function(req, res, next) {
 
@@ -80,7 +84,7 @@ router.get('/subir_tarea', function(req, res, next) {
 
 router.get('/subir_tarea/cargar_tareas', function(req, res, next) {
 	var recursos_actividades= function(actividades){		
-		console.log("pito");
+		console.log(actividades);
 		var opciones="";
 		for(var e in actividades[0]){		
 			opciones+="<option value="+actividades[0][e].tarea +">"+actividades[0][e].descripcion+"</option>";

@@ -25,30 +25,37 @@ block scripts
 			xmlhttp.send();
 		}
 
+		function seleccionar_tarea(){
+			document.getElementById("estado_tarea").innerHTML="<b> hola que hace </b>";
+		}
+
 block content
 	br
 	br
 	div.container
-		h1 Tareas
-		div
-			p
-				b Ciclo: 
-			select(id='ciclo',name='ciclo')
-				option(value='1') Ciclo 2015
-			p
-				b Unidad: 
-			select(id='unidad',name='unidad')
-				option(value='1') 1ra Unidad
-			p
-				b Curso: 
-			select(id='curso' name='curso' onChange="seleccionar_curso(this.value,ciclo.value,unidad.value)")
-				option(value='-1', disabled selected) Seleccione un curso
-				each cur,id in cursos
-					option(value='{"curso":#{cur.curso},"ciclo":#{cur.ciclo},"seccion":#{cur.seccion}}') #{cur.nombre}
+		h1 Tareas				
+		p
+			b Ciclo: 
+		select(id='ciclo',name='ciclo')
+			option(value='1') Ciclo 2015	
+		p
+			b Unidad: 
+		select(id='unidad',name='unidad')
+			option(value='1') 1ra Unidad			
+		p
+			b Curso: 
+		select(id='curso' name='curso' onChange="seleccionar_curso(this.value,ciclo.value,unidad.value)")
+			option(value='-1', disabled selected) Seleccione un curso
+			each cur,id in cursos
+				option(value='{"curso":#{cur.curso},"ciclo":#{cur.ciclo},"seccion":#{cur.seccion}}') #{cur.nombre}
 		br
-		br
+		br			
 		b Actividades del curso
 		br
 		br
 		div(Style="display:inline-block;")
-			select(size="10",style="width:500px;height:200px",id="select_tareas")
+			select(size="5",style="width:500px;height:100px",id="select_tareas", onChange="seleccionar_tarea();")							
+		br
+		br
+		b Estado de entrega				
+		div(id="estado_tarea")
