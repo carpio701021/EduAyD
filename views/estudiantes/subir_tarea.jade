@@ -1,8 +1,30 @@
 extends base_estudiantes
 
 block scripts
-	//script(language="javascript",src='/javascript/asignar_tarea.js')
+	
 
 block content
 	br
 	br
+	div.container
+		table
+			tr
+				td
+					h2 CURSOS
+					select
+						each c,id in cursos_por_estudiante 
+							option(value='#{c.curso}') #{c.nombre}
+					br
+				td
+			tr
+				td
+					h2 TAREAS
+					table
+						tr
+							td
+								h2 prueba
+						tr
+							td
+								h2 prueba		      
+				td
+					h2 CAMPOS DE LA TAREA

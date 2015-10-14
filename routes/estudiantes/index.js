@@ -30,12 +30,20 @@ function sumar_notas(list_notas){
 
 /* GET subir_tarea page. */
 router.get('/subir_tarea', function(req, res, next) {
-	res.render('estudiantes/subir_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
-	
+//	var carnet_estudiante = req.body.
+	var cursos_por_estudiante_f = function(cursos_por_estudiante){
+		res.render('estudiantes/subir_tarea', { 
+			nombre_usuario: 'Luis Eduardo' ,
+			cursos_por_estudiante: cursos_por_estudiante[0]
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+    var str_query = 'call eduaydre.sp_get_cursos_por_estudiante_from_estudiantes(1, 1);';	
+
+	dbconnection.exe_query(
+			str_query, 
+			cursos_por_estudiante_f,
+			res);
 });
-
-
-
-
 
 module.exports = router;

@@ -137,4 +137,9 @@ INSERT INTO `eduaydre`.`tarea_ciclo_curso_maestro` (`tarea`, `ciclo`, `maestro`,
 
 INSERT INTO `eduaydre`.`tarea_seccion_ciclo_curso_maestro` (`ciclo`, `curso`, `tarea`, `ponderacion`, `fecha_limite`, `tolerancia`, `tiempo_tolerancia`, `porcentaje_tolerancia`, `aprobada`, `seccion`) VALUES ('1', '1', '1', '30', '1-2-1 5:30:00', '0', '1-2-1 5:30:00', '0', '1', '1');
 
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '1', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '2', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '3', '1');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '1', '2');
+INSERT INTO `eduaydre`.`estudiante_ciclo_curso` (`ciclo`, `curso`, `carnet`) VALUES ('1', '3', '2');
 
