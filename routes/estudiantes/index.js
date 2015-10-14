@@ -25,7 +25,7 @@ router.get('/notas', function(req, res, next) {
 		});	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante('+req.user_session.id+',1);'; //estudiante,ciclo
 
 	dbconnection.exe_query(
 			str_query, 
@@ -46,11 +46,12 @@ router.post('/notas/cargar_tabla_notas', function(req, res, next) {
 		);	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-	var str_query = 'CALL sp_get_notas_from_estudiante_curso_ciclo(1,'+
-	req.body.curso + ',' +
-	req.body.ciclo + ',' +
-	req.body.unidad +
-	');'; //carnet,curso,ciclo,unidad
+	var str_query = 'CALL sp_get_notas_from_estudiante_curso_ciclo('+
+		req.user_session.id+','+
+		req.body.curso + ',' +
+		req.body.ciclo + ',' +
+		req.body.unidad +
+		');'; //carnet,curso,ciclo,unidad
 
 	dbconnection.exe_query(
 			str_query, 
