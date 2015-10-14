@@ -656,6 +656,90 @@ CREATE TABLE IF NOT EXISTS `eduaydre`.`ESTUDIANTE_REPORTE` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `eduaydre`.`usuario_tipo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `eduaydre`.`usuario_tipo` ;
+
+CREATE TABLE IF NOT EXISTS `eduaydre`.`usuario_tipo` (
+  `usuario_tipo` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `nombre` VARCHAR(50) NULL COMMENT '',
+  PRIMARY KEY (`usuario_tipo`)  COMMENT '')
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `eduaydre`.`usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `eduaydre`.`usuario` ;
+
+CREATE TABLE IF NOT EXISTS `eduaydre`.`usuario` (
+  `usuario` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `correo` VARCHAR(45) NULL COMMENT '',
+  `pass` VARCHAR(45) NULL COMMENT '',
+  `usuario_tipo` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`usuario`)  COMMENT '',
+  INDEX `fk_usuario_usuario_tipo1_idx` (`usuario_tipo` ASC)  COMMENT '',
+  CONSTRAINT `fk_usuario_usuario_tipo1`
+    FOREIGN KEY (`usuario_tipo`)
+    REFERENCES `eduaydre`.`usuario_tipo` (`usuario_tipo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `eduaydre`.`usuario_maestro`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `eduaydre`.`usuario_maestro` ;
+
+CREATE TABLE IF NOT EXISTS `eduaydre`.`usuario_maestro` (
+  `id_maestro` INT(11) NOT NULL COMMENT '',
+  `usuario` INT NOT NULL COMMENT '',
+  PRIMARY KEY (`id_maestro`, `usuario`)  COMMENT '',
+  INDEX `fk_usuario_maestro_usuario1_idx` (`usuario` ASC)  COMMENT '',
+  CONSTRAINT `fk_usuario_maestro_maestro1`
+    FOREIGN KEY (`id_maestro`)
+    REFERENCES `eduaydre`.`maestro` (`id_maestro`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_usuario_maestro_usuario1`
+    FOREIGN KEY (`usuario`)
+    REFERENCES `eduaydre`.`usuario` (`usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `eduaydre`.`usuario_estudiante`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `eduaydre`.`usuario_estudiante` ;
+
+CREATE TABLE IF NOT EXISTS `eduaydre`.`usuario_estudiante` (
+  `usuario` INT NOT NULL COMMENT '',
+  `carnet` INT(11) NOT NULL COMMENT '',
+  PRIMARY KEY (`usuario`, `carnet`)  COMMENT '',
+  INDEX `fk_usuario_estudiante_estudiante1_idx` (`carnet` ASC)  COMMENT '',
+  CONSTRAINT `fk_usuario_estudiante_usuario1`
+    FOREIGN KEY (`usuario`)
+    REFERENCES `eduaydre`.`usuario` (`usuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_usuario_estudiante_estudiante1`
+    FOREIGN KEY (`carnet`)
+    REFERENCES `eduaydre`.`estudiante` (`carnet`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+
+
+USE `eduaydre` ;
+
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
