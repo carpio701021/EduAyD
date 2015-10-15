@@ -58,7 +58,7 @@ select {
 	width: 250px;
 }
 
-input[type=date],input[type=number],input[type=text],textarea {
+input[type=date],input[type=number],input[type=text],input[type=password],textarea {
 	background: transparent;
 	border-radius: 7px ;
 	font-size: 14px;
@@ -347,5 +347,3 @@ input[type=number].inptxttbl{
   }
 
 }
-
-/*Fin cosas de grid*/

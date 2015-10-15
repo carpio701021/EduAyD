@@ -163,17 +163,23 @@ end$$
 
 -- SP que obtiene los cursos que un estudiante cursa en un ciclo determinado
 DROP PROCEDURE IF EXISTS sp_get_cursos_ciclos_from_estudiante;
+
 DELIMITER $$
 CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_cursos_ciclos_from_estudiante`(in p_carnet int,in p_ciclo int)
 BEGIN
 
-select ecc.ciclo,c.curso,c.nombre
-from estudiante_ciclo_curso ecc, curso c
+select ecc.ciclo,c.curso,c.nombre,esc.seccion
+from estudiante_ciclo_curso ecc, curso c, estudiante_seccion_ciclo esc
 where ecc.carnet=p_carnet and ecc.ciclo=p_ciclo and ecc.curso=c.curso
+and esc.carnet=ecc.carnet and esc.ciclo=p_ciclo
 ;
 
 END$$
 DELIMITER ;
+
+call eduaydre.sp_get_cursos_ciclos_from_estudiante(1, 1);
+
+
 
 -- SP que obtiene los resultados de las tareas
 DROP PROCEDURE IF EXISTS sp_get_notas_from_estudiante_curso_ciclo;
@@ -182,15 +188,44 @@ CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_notas_from_estudiante_curso_
 in p_carnet int,in p_curso int,in p_ciclo int,in p_unidad int)
 BEGIN
 
-select n.nota_obtenida,n.fecha_de_envio,t.descripcion,n.tarea,n.fecha_calificacion,tt.nombre
+select n.nota_obtenida,n.fecha_de_envio,t.descripcion,n.tarea,n.fecha_calificacion,tt.nombre as 'tipo_tarea',tsccm.ponderacion
 -- select *
-from nota n, tarea t, tarea_tipo tt
-where n.carnet = p_carnet and n.ciclo=p_ciclo and 
-n.curso=p_curso and n.tarea=t.tarea and t.unidad=p_unidad and t.tipo_tarea=tt.tarea_tipo
+from nota n, tarea t, tarea_tipo tt,tarea_seccion_ciclo_curso_maestro tsccm
+where n.carnet = p_carnet and n.ciclo=p_ciclo 
+and n.curso=p_curso and n.tarea=t.tarea and t.unidad=p_unidad and t.tipo_tarea=tt.tarea_tipo
+and t.tarea=tsccm.tarea and tsccm.ciclo=n.ciclo and tsccm.curso=n.curso
 ;
 
 END$$
 DELIMITER ;
+
+
+
+-- Procedimiento para el login
+DROP PROCEDURE IF EXISTS sp_login;
+delimiter $$
+create procedure sp_login(in p_correo varchar(45), in p_pass varchar(45), in p_tipo_usuario int)
+begin
+-- siempre sera 1 maestro y 2 estudiante
+declare v_usuario int default 0; -- codigo de usuario
+declare resp int default 0; -- si la respuesta es 1 el login fue exitoso
+declare v_id int default 0; -- el respectivo id de su tipo (carnet o id_maestro etc)
+
+if p_tipo_usuario = 1 then -- si es maestro realiza la respectiva consulta
+	set v_id = ifnull((
+		select m.id_maestro from maestro m , usuario_maestro um, usuario u
+		where m.id_maestro=um.id_maestro and u.usuario=um.usuario and u.correo=p_correo and u.pass=p_pass ),0);
+elseif p_tipo_usuario = 2 then -- si es estudiante 
+	set v_id = ifnull((
+		select e.carnet from estudiante e , usuario_estudiante ue, usuario u
+		where e.carnet=ue.carnet and u.usuario=ue.usuario and u.correo=p_correo and u.pass=p_pass ),0); 
+else set v_id = 0;
+end if;
+
+select v_id as id;
+		
+end$$
+
 
 
 
@@ -273,3 +308,24 @@ INSERT INTO `eduaydre`.`seccion_ciclo` (`seccion`, `ciclo`) VALUES ('1', '1');
 INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('1', '1', '1');
 INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('2', '1', '1');
 INSERT INTO `eduaydre`.`estudiante_seccion_ciclo` (`carnet`, `seccion`, `ciclo`) VALUES ('3', '1', '1');
+
+
+INSERT INTO `eduaydre`.`usuario_tipo` (`nombre`) VALUES ('maestro');
+INSERT INTO `eduaydre`.`usuario_tipo` (`nombre`) VALUES ('estudiante');
+
+
+INSERT INTO `eduaydre`.`usuario` (`correo`, `pass`, `usuario_tipo`) VALUES ('peralta', 'ccc', '1');
+INSERT INTO `eduaydre`.`usuario` (`correo`, `pass`, `usuario_tipo`) VALUES ('chino', 'ccc', '1');
+
+INSERT INTO `eduaydre`.`usuario_maestro` (`id_maestro`, `usuario`) VALUES ('1', '1');
+INSERT INTO `eduaydre`.`usuario_maestro` (`id_maestro`, `usuario`) VALUES ('2', '2');
+
+
+INSERT INTO `eduaydre`.`usuario` (`correo`, `pass`, `usuario_tipo`) VALUES ('benito', 'bbb', '2');
+INSERT INTO `eduaydre`.`usuario` (`correo`, `pass`, `usuario_tipo`) VALUES ('melisa', 'bbb', '2');
+
+
+INSERT INTO `eduaydre`.`usuario_estudiante` (`usuario`, `carnet`) VALUES ('3', '1');
+INSERT INTO `eduaydre`.`usuario_estudiante` (`usuario`, `carnet`) VALUES ('4', '2');
+
+
