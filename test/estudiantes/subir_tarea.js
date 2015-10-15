@@ -1,11 +1,6 @@
 
 var test = require('unit.js');
 
-
-
-
-
-
 describe('Learning by the example', function(){
 	var recursos_ingresar_notas= function(cursos_del_maestro){
 		
