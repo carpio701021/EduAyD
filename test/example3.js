@@ -14,13 +14,14 @@ app.get('/user', function(req, res){
 });
 
 describe('GET /users', function(){
-	
+
 	var resu=fib(numero) ;
 	  it('respond with json', function(done){
 	    test.httpAgent(app)
 	      .get('/user?numero=5')
 	      .set('Accept', 'application/json')
 	      .expect('Content-Type', /json/)
+
 	      .expect(200, done)
 	      .contains({numero:5});
 	  })
