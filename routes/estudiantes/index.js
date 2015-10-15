@@ -3,21 +3,29 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.render('estudiantes/index', { nombre_usuario: 'Aqui el nombre usuario' });
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
+	res.render('estudiantes/index', { nombre_usuario: req.user_session.usuario });
 	
 });
 
 /* GET notas page. */
 router.get('/notas', function(req, res, next) {
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 
 	var recursos_notas = function(cursos_del_estudiante){
 		res.render('estudiantes/notas', { 
-			nombre_usuario: 'Luis Eduardo' ,
+			nombre_usuario: req.user_session.usuario ,
 			cursos: cursos_del_estudiante[0]
 		});	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante(1,1);'; //estudiante,ciclo
+	var str_query = 'CALL sp_get_cursos_ciclos_from_estudiante('+req.user_session.id+',1);'; //estudiante,ciclo
 
 	dbconnection.exe_query(
 			str_query, 
@@ -27,7 +35,10 @@ router.get('/notas', function(req, res, next) {
 
 /* POST tabla de notas page. */
 router.post('/notas/cargar_tabla_notas', function(req, res, next) {
-
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 	var recursos_notas = function(cursos_del_estudiante){
 		console.log(cursos_del_estudiante[0]);
 		res.json(
@@ -35,11 +46,12 @@ router.post('/notas/cargar_tabla_notas', function(req, res, next) {
 		);	
 	}
 	var dbconnection = require('../../routes/dbconnection.js');
-	var str_query = 'CALL sp_get_notas_from_estudiante_curso_ciclo(1,'+
-	req.body.curso + ',' +
-	req.body.ciclo + ',' +
-	req.body.unidad +
-	');'; //carnet,curso,ciclo,unidad
+	var str_query = 'CALL sp_get_notas_from_estudiante_curso_ciclo('+
+		req.user_session.id+','+
+		req.body.curso + ',' +
+		req.body.ciclo + ',' +
+		req.body.unidad +
+		');'; //carnet,curso,ciclo,unidad
 
 	dbconnection.exe_query(
 			str_query, 
@@ -52,6 +64,10 @@ router.post('/notas/cargar_tabla_notas', function(req, res, next) {
 
 /* POST sumar notas page. */
 router.get('/notas/sumar_notas', function(req, res, next) {
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
 	res.send(sumar_notas(req.body.list_notas));
 });
 
@@ -66,7 +82,11 @@ function sumar_notas(list_notas){
 
 /* GET subir_tarea page. */
 router.get('/subir_tarea', function(req, res, next) {
-	res.render('estudiantes/subir_tarea', { nombre_usuario: 'Aqui el nombre usuario' });
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
+	res.render('estudiantes/subir_tarea', { nombre_usuario: req.user_session.usuario });
 	
 });
 

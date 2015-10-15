@@ -7,13 +7,26 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var test = require('unit.js');
 
+//libreria de manejo de sessiones
+var sessions = require('client-sessions');
+
 //Routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var maestros = require('./routes/maestros/index');
 var estudiantes = require('./routes/estudiantes/index');
+var login = require('./routes/login');
 
 var app = express();
+
+//session de usuarios
+app.use(sessions({
+  cookieName: 'user_session',
+  secret: 'aT4023=DIj0230ij=S_jFeHf-fwe', //contraseña de encriptamiento de la cookie
+  duration: 1 * 60 * 60 * 1000, //duracion de la cookie 1 hora (sesion)
+  activeDuration: 30 * 60 * 1000 //re activacion de la duracion cookie 30 minutos
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +45,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/maestros', maestros);
 app.use('/estudiantes', estudiantes);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
