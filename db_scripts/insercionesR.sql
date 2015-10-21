@@ -227,6 +227,16 @@ select v_id as id;
 end$$
 
 
+-- SP que obtiene todos los usuarios y sus correos con sus tipos
+DROP PROCEDURE IF EXISTS sp_get_usuarios;
+DELIMITER $$
+CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_usuarios`()
+BEGIN
+
+select usuario,correo,usuario_tipo tipo from usuario;
+
+END$$
+DELIMITER ;
 
 
 -- ---- fin stored procedures
@@ -328,4 +338,14 @@ INSERT INTO `eduaydre`.`usuario` (`correo`, `pass`, `usuario_tipo`) VALUES ('mel
 INSERT INTO `eduaydre`.`usuario_estudiante` (`usuario`, `carnet`) VALUES ('3', '1');
 INSERT INTO `eduaydre`.`usuario_estudiante` (`usuario`, `carnet`) VALUES ('4', '2');
 
+
+INSERT INTO `eduaydre`.`usuario_tipo` (`usuario_tipo`, `nombre`) VALUES ('3', 'encargado');
+INSERT INTO `eduaydre`.`usuario_tipo` (`usuario_tipo`, `nombre`) VALUES ('4', 'director');
+
+
+
+INSERT INTO `eduaydre`.`usuario` (`usuario`, `correo`, `pass`, `usuario_tipo`) VALUES ('5', 'soypapa', 'ppp', '3');
+INSERT INTO `eduaydre`.`usuario` (`usuario`, `correo`, `pass`, `usuario_tipo`) VALUES ('6', 'soymama', 'ppp', '3');
+INSERT INTO `eduaydre`.`usuario` (`usuario`, `correo`, `pass`, `usuario_tipo`) VALUES ('7', 'eldirector', 'ddd', '4');
+INSERT INTO `eduaydre`.`usuario` (`usuario`, `correo`, `pass`, `usuario_tipo`) VALUES ('8', 'eldueño', 'eee', '4');
 
