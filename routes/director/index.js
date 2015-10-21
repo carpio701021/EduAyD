@@ -10,6 +10,40 @@ var storage = multer.diskStorage({
 var upload = multer({
 	storage: storage
 });
+
+
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'eduaydg1@gmail.com',
+        pass: 'pokemon150'
+    }
+});
+
+// NB! No need to recreate the transporter object. You can use
+// the same transporter object for all e-mails
+
+// setup e-mail data with unicode symbols
+/*var mailOptions = {
+    from: 'Fred Foo ✔ <foo@blurdybloop.com>', // sender address
+    to: 'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
+    subject: 'Hello ✔', // Subject line
+    text: 'Hello world ✔', // plaintext body
+    html: '<b>Hello world ✔</b>' // html body
+};
+
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+
+});
+*/
 var express = require('express');
 var router = express.Router();
 
@@ -32,7 +66,34 @@ router.get('/correos/', function(req, res, next) {
 	/*if (!(req.user_session && req.user_session.tipo == '1')){
 		res.redirect('/login?error=debe iniciar sesion primero');
 		return;
+	}*/		
+	res.render('director/correos',{
+		nombre_usuario: req.user_session.usuario
+	});
+
+
+});
+
+router.post('/correos/enviar/', function(req, res, next) {
+	/*if (!(req.user_session && req.user_session.tipo == '1')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
 	}*/	
+	console.log("entro")
+	var mailOptions = {
+	    //from: 'Fred Foo ✔ <foo@blurdybloop.com>', // sender address
+	    to: 'jodaches@gmail.com,carpio701021@gmail.com', // list of receivers
+	    subject: 'Prueba', // Subject line
+	    text: 'multicorreo funciona nitido', // plaintext body
+//	    html: '<b>Hello world ✔</b>' // html body
+	};
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        return console.log(error);
+	    }
+	    console.log('Mensaje enviado: ' + info.response);
+
+	});
 	res.render('director/correos',{
 		nombre_usuario: req.user_session.usuario
 	});

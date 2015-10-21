@@ -2,14 +2,6 @@ extends base_director
 
 block scripts
 	script.
-		function sendMail() {
-		var link = "mailto:chavarriausac@hotmail.com"
-						 + "?cc=chavarriausac@hotmail.com"
-						 + "&subject=" + escape("This is my subject")
-						 + "&body=" + escape('hola que hace')
-		;
-		window.location.href = link;
-		}
 
 block content
 	h1 Correos	
@@ -23,7 +15,7 @@ block content
 	button(type="button" onClick="sendMail(); return false") enviar
 	
 
-	form(name='login', action='/login', method='POST', accept-charset='utf-8')			
+	form(name='FromCorreo', action='/director/correos/enviar/', method='POST', accept-charset='utf-8')			
 		if error																			
 			.alert.alert-danger(role='alert')
 				strong #{error}						
@@ -38,7 +30,7 @@ block content
 			option(value="1") Maestro
 			option(value="2", selected) Estudiante
 		div(style='padding:5px 0px;width:80%;')
-			input(type='submit', value='Ingresar')
+			input(type='submit', value='Enviar')		
 
 
 
