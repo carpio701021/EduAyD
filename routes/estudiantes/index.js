@@ -1,3 +1,16 @@
+var multer = require('multer');
+var storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		cb(null, '../uploads_from_server/')
+	},
+	filename: function(req, file, cb) {
+		cb(null, "[" + file.fieldname + '-' + Date.now() + "]" + file.originalname)
+	}
+});
+var upload = multer({
+	storage: storage
+});
+
 var express = require('express');
 var router = express.Router();
 
@@ -134,6 +147,12 @@ router.get('/subir_tarea/cargar_tareas', function(req, res, next) {
 	
 });
 
+router.post('/subir_tarea/subir_archivo/', upload.single('archivo_tarea'), function(req, res, next) {
+	// req.file is the `avatar` file
+	// req.body will hold the text fields, if there were any
+	console.log("Archivo subido: " + req.file.path);
+	res.send(req.file.path);
+});
 
 
 

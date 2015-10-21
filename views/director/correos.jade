@@ -1,0 +1,44 @@
+extends base_director
+
+block scripts
+	script.
+		function sendMail() {
+		var link = "mailto:chavarriausac@hotmail.com"
+						 + "?cc=chavarriausac@hotmail.com"
+						 + "&subject=" + escape("This is my subject")
+						 + "&body=" + escape('hola que hace')
+		;
+		window.location.href = link;
+		}
+
+block content
+	h1 Correos	
+	b Destinatarios: 
+	select(type="select" id="select_destino")
+		option(value='1') Maestros
+		option(value='2') Estudiantes
+		option(value='3') Encargados
+		option(value='5' selected) Todos
+	
+	button(type="button" onClick="sendMail(); return false") enviar
+	
+
+	form(name='login', action='/login', method='POST', accept-charset='utf-8')			
+		if error																			
+			.alert.alert-danger(role='alert')
+				strong #{error}						
+		label(for='c_user') Usuario
+		input(type='text', name='c_user', placeholder='usuario')
+		br
+		label(for='password') Contraseña
+		input(type='password', name='password', placeholder='contraseña')
+		br
+		label(for='tipo') Tipo
+		select(name='tipo')
+			option(value="1") Maestro
+			option(value="2", selected) Estudiante
+		div(style='padding:5px 0px;width:80%;')
+			input(type='submit', value='Ingresar')
+
+
+
