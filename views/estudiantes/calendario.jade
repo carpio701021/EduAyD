@@ -1,18 +1,5 @@
 extends base_estudiantes
 	
-block scripts	
-	script.
-		$(document).ready(function() {		
-			$('#calendar').fullCalendar({
-				lang: 'es'
-			});
-		});	
-		function renderCalendar(){
-			$('#calendar').fullCalendar({	
-				lang: 'fi'
-			});
-		}
-
 block content
 	br
 	br
@@ -20,26 +7,23 @@ block content
 		h1 Mi calendario		
 		#calendar
 			script.
-				$('#calendar').fullCalendar({
-				events: [
-				{
-				title	: 'event1',
-				start	: '2015-10-10'
-				},
-				{
-				title	: 'event2',
-				start	: '2015-10-15',
-				end		: '2015-10-17'
-				},
-				{
-				title	: 'event3',
-				start	: '2015-10-09T12:30:00',
-				allDay : false // will make the time show
-				},
-				{
-				title	: 'event4',
-				start	: '2015-10-15',
-				end		: '2015-10-17'
+				var eventos = !{JSON.stringify(actividades)};
+				var evs = [];
+				for (ev in eventos){
+					evs.push({
+						title: eventos[ev].nombre ,
+						start: eventos[ev].fecha_limite
+					});
 				}
-				]
+
+				$('#calendar').fullCalendar({
+					lang: 'es',
+					events: evs
 				});
+
+		//div(id='holi')
+			script.
+				holi.innerHTML = JSON.stringify(eventos);
+
+
+	

@@ -95,7 +95,7 @@ router.post('/asignar_tarea/guardar_tarea', function(req, res, next) {
 	var p_toleraciona = 1;
 	var p_tiempo_tolerancia = p_fecha_limite;
 	var p_porcentaje_tolerancia = 0;
-	var p_aprobada = 0;
+	var p_aprobada = 1;
 
 
 	//var send = fecha_inicio_actividad;
