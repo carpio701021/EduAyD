@@ -2,35 +2,45 @@ extends base_director
 
 block scripts
 	script.
+		function selec_destino_onchange(){
+			if(select_destino.value==6){
+				div_otro.style.display="block"
+			}else{
+				div_otro.style.display="none"
+			}
+		}
 
 block content
-	h1 Correos	
-	b Destinatarios: 
-	select(type="select" id="select_destino")
-		option(value='1') Maestros
-		option(value='2') Estudiantes
-		option(value='3') Encargados
-		option(value='5' selected) Todos
-	
-	button(type="button" onClick="sendMail(); return false") enviar
+	h1 Correos			
 	
 
 	form(name='FromCorreo', action='/director/correos/enviar/', method='POST', accept-charset='utf-8')			
-		if error																			
-			.alert.alert-danger(role='alert')
-				strong #{error}						
-		label(for='c_user') Usuario
-		input(type='text', name='c_user', placeholder='usuario')
+		//b(style="padding:15px") Grado: 
+		//select(type="select" id="select_grados")
+		b(style="padding:15px") Usuarios: 
+		select(type="select" id="select_destino" onChange="selec_destino_onchange();")
+			option(value='1') Maestros
+			option(value='2') Estudiantes
+			option(value='3') Encargados
+			option(value='5' selected) Todos		
+			option(value='6') Otro	
 		br
-		label(for='password') Contraseña
-		input(type='password', name='password', placeholder='contraseña')
 		br
-		label(for='tipo') Tipo
-		select(name='tipo')
-			option(value="1") Maestro
-			option(value="2", selected) Estudiante
-		div(style='padding:5px 0px;width:80%;')
-			input(type='submit', value='Enviar')		
+		div(id="div_otro" style="display:none")
+			b(style="padding:15px") Otro: 
+			input(type='text', name='txt_otro')
+			br
+			br
+
+		b(style="padding:15px") Asunto: 	
+		input(type='text', name='txt_titulo')
+		br
+		br
+		b(style="padding:15px") Cuerpo: 	
+		textarea(name='txt_cuerpo' style="width:40%")
+		br		
+		div(style='padding:25px;width:80%;',align="center")
+			input(type='submit', value='Enviar')
 
 
 

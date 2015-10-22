@@ -79,12 +79,13 @@ router.post('/correos/enviar/', function(req, res, next) {
 		res.redirect('/login?error=debe iniciar sesion primero');
 		return;
 	}*/	
-	console.log("entro")
+	console.log("to: "+req.body.txt_otro +" titulo: "+req.body.txt_titulo+" cuerpo:" + req.body.txt_cuerpo)
+
 	var mailOptions = {
 	    //from: 'EDUAYD <eduaydg1@gmail.com>', // sender address
-	    to: 'carpio701021@gmail.com,jodaches@gmail.com', // list of receivers
-	    subject: 'Prueba', // Subject line
-	    text: 'multicorreo funciona nitido', // plaintext body
+	    to: req.body.txt_otro, // list of receivers
+	    subject: req.body.txt_titulo, // Subject line
+	    text: req.body.txt_cuerpo, // plaintext body	    
 //	    html: '<b>Hello world ✔</b>' // html body
 	};
 	transporter.sendMail(mailOptions, function(error, info){
