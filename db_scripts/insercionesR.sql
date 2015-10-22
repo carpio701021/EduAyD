@@ -225,7 +225,7 @@ end if;
 select v_id as id;
 		
 end$$
-
+delimiter
 
 -- SP que obtiene todos los usuarios y sus correos con sus tipos
 DROP PROCEDURE IF EXISTS sp_get_usuarios;
@@ -269,7 +269,6 @@ DELIMITER ;
 -- Inserciones de datos
 
 INSERT INTO `eduaydre`.`ciclo`(`ciclo`,`descripcion`,`fecha_inicio`,`fecha_fin`)VALUES(1,"Año 2015","2015-1-1","2015-12-31");
-
 
 INSERT INTO `eduaydre`.`grado` (`grado`, `observacion`) VALUES ('1', '1ro Primaria');
 INSERT INTO `eduaydre`.`grado` (`grado`, `observacion`) VALUES ('2', '2do Primaria');

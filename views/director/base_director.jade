@@ -1,0 +1,51 @@
+doctype html
+html
+	head
+		title= title
+		//meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+		meta(name='viewport', content='width=device-width,', initial-scale='1')
+		link(rel='stylesheet', href='/stylesheets/basic-style.css')
+		link(rel='stylesheet', href='/stylesheets/fullcalendar.css')
+		link(rel='stylesheet', href='/stylesheets/fullcalendar.print.css',media="print")
+		link(rel='stylesheet', href='/stylesheets/jquery-ui.min.css')
+		script(src='/javascript/jquery.min.js')
+		script(src='/javascript/moment.min.js')
+		script(src='/javascript/fullcalendar.min.js')
+		script(src='/javascript/lang-all.js')		
+		block scripts
+	
+	body
+		#wrapper
+			#cssmenu
+				ul#menulu
+					li#logoli.client
+						#logoa(onClick='window.location = "/"')
+							span EduAyD - Director
+
+					block cursosli
+						li#cursosli
+							a(href='/director/correos')
+								span Correos			
+						
+
+			#content
+				block content
+
+			#footer
+				br
+				br
+				br
+				#cssmenu.footer
+					ul#menufooter.footer
+						
+						li#logout.user
+							#logoa(onClick='window.location = "/"')
+								span #{nombre_usuario}
+
+						li#configli.useropt
+							a(href='/configuser')
+								span Configuración
+
+						li#logoutli.useropt.last
+							a(href='/login')
+								span Cerrar Sesión

@@ -14,6 +14,7 @@ var sessions = require('client-sessions');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var maestros = require('./routes/maestros/index');
+var director = require('./routes/director/index');
 var estudiantes = require('./routes/estudiantes/index');
 var login = require('./routes/login');
 
@@ -45,6 +46,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/maestros', maestros);
 app.use('/estudiantes', estudiantes);
+app.use('/director', director);
 app.use('/login', login);
 
 // catch 404 and forward to error handler
