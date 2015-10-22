@@ -81,8 +81,8 @@ router.post('/correos/enviar/', function(req, res, next) {
 	}*/	
 	console.log("entro")
 	var mailOptions = {
-	    from: 'EDUAYD <eduaydg1@gmail.com>', // sender address
-	    to: 'carpio701021@gmail.com', // list of receivers
+	    //from: 'EDUAYD <eduaydg1@gmail.com>', // sender address
+	    to: 'carpio701021@gmail.com,jodaches@gmail.com', // list of receivers
 	    subject: 'Prueba', // Subject line
 	    text: 'multicorreo funciona nitido', // plaintext body
 //	    html: '<b>Hello world ✔</b>' // html body
