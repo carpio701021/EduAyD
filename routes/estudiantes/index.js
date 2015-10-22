@@ -25,7 +25,25 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/calendario', function(req, res, next) {
-	res.render('estudiantes/calendario', { nombre_usuario: 'Aqui el nombre usuario' });
+	if (!(req.user_session && req.user_session.tipo == '2')){
+		res.redirect('/login?error=debe iniciar sesion primero');
+		return;
+	}
+
+	//sp_get_tareas_para_calendario(carnet, ciclo, unidad)
+	var actividades_horario = function(actividades){
+		res.render('estudiantes/calendario', { 
+			nombre_usuario: req.user_session.usuario ,
+			actividades: actividades[0]
+		});	
+	}
+	var dbconnection = require('../../routes/dbconnection.js');
+	var str_query = 'CALL sp_get_tareas_para_calendario('+req.user_session.id+',1,1);'; //estudiante,ciclo
+
+	dbconnection.exe_query(
+			str_query, 
+			actividades_horario,
+			res);
 	
 });
 /* GET notas page. */

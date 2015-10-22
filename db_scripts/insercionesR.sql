@@ -239,6 +239,29 @@ END$$
 DELIMITER ;
 
 
+-- SP que obtiene las tareas para calendarizarlas
+DROP PROCEDURE IF EXISTS sp_get_tareas_para_calendario;
+DELIMITER $$
+CREATE DEFINER=`soft`@`localhost` PROCEDURE `sp_get_tareas_para_calendario`(
+in p_carnet int,in p_ciclo int,in p_unidad int)
+BEGIN
+
+select cu.nombre, cu.curso,tsccm.ponderacion,tsccm.fecha_limite,tsccm.tiempo_tolerancia
+-- select * 
+from estudiante e, ciclo c, unidad u, curso cu,
+estudiante_ciclo_curso ecc, 
+estudiante_seccion_ciclo esc, tarea_seccion_ciclo_curso_maestro tsccm
+where c.ciclo=p_ciclo and e.carnet=p_carnet and u.unidad=p_unidad and cu.curso=tsccm.curso
+and ecc.carnet=p_carnet and ecc.ciclo=p_ciclo
+and esc.carnet=p_carnet and esc.ciclo=p_ciclo
+and tsccm.seccion=esc.seccion and tsccm.ciclo=p_ciclo and tsccm.curso=ecc.curso
+and tsccm.aprobada=1
+;
+
+END$$
+DELIMITER ;
+
+
 -- ---- fin stored procedures
 
 
